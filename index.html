@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en" ng-app="music">
+	<head>
+		<title>Musicians!</title>
+		<link rel="stylesheet" type="text/css" href="music.css">
+	</head>
+	<body>
+		<div ng-controller="MusicianController">
+			<p>Press 'All' for a complete list of the musicians in our database.</p>
+			<button ng-click>All</button>
+			<p>Enter the data for a musician and press submit.</p>
+			<input type="text" ng-model="name" placeholder="name">
+			<input type="text" ng-model="genre" placeholder="genre">
+			<input type="text" ng-model="instrument" placeholder="instrument">
+			<button ng-disabled="!(name.length && genre.length && instrument.length)"
+							ng-click="add()">Add</button>
+			<table>
+				<tr ng-repeat="m in musicians">
+					<td>{{m.name}}</td>
+					<td>{{m.genre}}</td>
+					<td>{{m.instrument}}</td>
+					<td><button ng-click="$parent.remove(m)">Remove</button></td>
+				</tr>
+			</table>
+		</div>
+		<script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+		<script 
+			src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js">
+		</script>
+		<script src='music.js'></script>
+	</body>
+</html>
