@@ -1,0 +1,13 @@
+{
+  "name": "music_client",
+  "description": "A music website that manages artists, albums, songs, and events",
+  "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rpjensen/music_client.git"
+  },
+  "dependencies": {
+    "express": "^4.12.3",
+    "node-mysql": "^0.4.2"
+  }
+}

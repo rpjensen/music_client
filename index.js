@@ -1,23 +1,11 @@
 (function () {
 	"use strict";
 	
-	var express = require('express3'),
+	var express = require('express'),
 			http = require('http'),
-			mongoose = require('mongoose'),
 			app = express();
 
 	app.use(express.static(__dirname));
-	app.use(express.urlencoded());
-	
-	mongoose.connect('mongodb://localhost/music');
-	
-	var MusicianSchema = mongoose.Schema({
-		"name": String,
-		"genre": String,
-		"instrument": String
-	});
-	var Musician = mongoose.model('Musician', MusicianSchema);
-
 	http.createServer(app).listen(3000);
 	
 	app.get("/getMusician", function(req, res) {
