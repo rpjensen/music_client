@@ -6,7 +6,7 @@
 html {
     font-family: arial;
     background-color: #88c1c1;
-    width: 900px;
+    width: 800px;
     height: 100%;
     margin-left: auto;
     margin-right: auto;
@@ -15,29 +15,44 @@ html {
 body {
     background-color: #fffff7;
     top: 337px;
-    height: 100%;
+    height: auto;
 }
 
 .content {
     width: 600px;
+    height: auto;
     margin-right: auto;
     margin-left: auto;
 }
 
 .header {
-    max-height: 300px;
-    min-height: 300px;
+    height: 300px;
 }
 
 .footer {
+    width: 780px;
+    height: 100px;
     background-color: #fffff7;
-    position: absolute;
+    position: relative;
     bottom: 0;
-    max-height: 100px;
-    min-height: 50px;
-    padding: 10px;
+    margin: 10px;
 }
 
+.artist {
+    
+}
+
+.album {
+    
+}
+
+.song {
+    
+}
+
+.event {
+   
+}
 button {
     float: right;
     background-image: -webkit-linear-gradient(top, #3498db, #2980b9);
