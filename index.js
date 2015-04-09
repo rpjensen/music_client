@@ -2,11 +2,49 @@
 	"use strict";
 	
 	var express = require('express'),
-			http = require('http'),
-			app = express();
+		http = require('http'),
+		app = express();
+		mysql = require('mysql'),
+		pool = mysql.createPool({
+			connectionLimit : 100,
+			host : 'localhost',
+			user : 'root',
+			password : 'root',
+			database : 'music',
+			debug : false
+		});
 
 	app.use(express.static(__dirname));
 	http.createServer(app).listen(3000);
+
+// ================= Database Utilities =================
+
+var executeQuery = function(query, parameters, callback) {
+	pool.getConnection(function(err, connection) {
+		if (err) {
+			connection.release();
+			console.log({"code" : 100, "status" : "Error in connection database"});
+		}
+		else if (parameters.length > 0) {
+			connection.query(query, parameters, function(err, result) {
+				connection.release();
+				callback(err, result);
+			});
+		}
+		else {
+			connection.query(query, function(err, result) {
+				connection.release();
+				callback(err, result);
+			})
+		}
+			
+		connection.on("error", function(err) {
+			console.json({"code" : 100, "status" : "Error in connection database"});
+			return;
+		});
+	});
+};
+	
 
 
 // ================= Server-Side API =================
@@ -18,11 +56,15 @@
 	* Returns: band-id (-1 for fail)
 	*/
 	app.get("/getBands", function(req, res) {
-		if (err) {
-			console.log(err);
-		} else {
-			res.json();
-		}
+		var query = "SELECT id, name, genre FROM band";
+		executeQuery(query, [], function(err, result) {
+			if (err) {
+				console.log(err);
+			} else {
+				console.log(result);
+				res.json(result);
+			}
+		});
 	});
 
 	/* 
@@ -31,11 +73,15 @@
 	* Returns: band-id (-1 for fail)
 	*/
 	app.post("/addBand", function(req, res) {
-		if (err) {
-			console.log(err);
-		} else {
-			res.json();
-		}
+		var query = "SELECT id, name, genre FROM band";
+		executeQuery(query, [], function(err, result) {
+			if (err) {
+				console.log(err);
+			} else {
+				console.log(result);
+				res.json(result);
+			}
+		});
 	});
 
 	/*
@@ -44,11 +90,15 @@
 	* Returns: ‘success’ or ‘failed’
 	*/
 	app.post("/updateBand", function(req, res) {
-		if (err) {
-			console.log(err);
-		} else {
-			res.json();
-		}
+		var query = "SELECT id, name, genre FROM band";
+		executeQuery(query, [], function(err, result) {
+			if (err) {
+				console.log(err);
+			} else {
+				console.log(result);
+				res.json(result);
+			}
+		});
 	});
 
 // ---------- Artists ----------
@@ -59,11 +109,15 @@
 	* Returns: array [ {artist-id : “val”, name : “val”, genre : ‘val’}, {...}, ... ]
 	*/
 	app.get("/getArtists", function(req, res) {
-		if (err) {
-			console.log(err);
-		} else {
-			res.json();
-		}
+		var query = "SELECT id, name, genre FROM band";
+		executeQuery(query, [], function(err, result) {
+			if (err) {
+				console.log(err);
+			} else {
+				console.log(result);
+				res.json(result);
+			}
+		});
 	});
 
 	/*
@@ -72,11 +126,15 @@
 	* Returns: [ {artist-id : ‘val’, first-name : ‘val’, last-name : ‘val’, …}, {...}, … ]
 	*/
 	app.get("/getArtistsForBand", function(req, res) {
-		if (err) {
-			console.log(err);
-		} else {
-			res.json();
-		}
+		var query = "SELECT id, name, genre FROM band";
+		executeQuery(query, [], function(err, result) {
+			if (err) {
+				console.log(err);
+			} else {
+				console.log(result);
+				res.json(result);
+			}
+		});
 	});
 
 	/*
@@ -85,11 +143,15 @@
 	* Returns : id (-1 for fail)
 	*/
 	app.post("/addArtist", function(req, res) {
-		if (err) {
-			console.log(err);
-		} else {
-			res.json();
-		}
+		var query = "SELECT id, name, genre FROM band";
+		executeQuery(query, [], function(err, result) {
+			if (err) {
+				console.log(err);
+			} else {
+				console.log(result);
+				res.json(result);
+			}
+		});
 	});
 	
 	/*
@@ -98,11 +160,15 @@
 	* Returns : ‘success’ or ‘failed’
 	*/
 	app.post("/updateArtist", function(req, res) {
-		if (err) {
-			console.log(err);
-		} else {
-			res.json();
-		}
+		var query = "SELECT id, name, genre FROM band";
+		executeQuery(query, [], function(err, result) {
+			if (err) {
+				console.log(err);
+			} else {
+				console.log(result);
+				res.json(result);
+			}
+		});
 	});
 
 	/*
@@ -111,11 +177,15 @@
 	* Returns: ‘success’ or ‘failed’
 	*/
 	app.post("/addArtistForBand", function(req, res) {
-		if (err) {
-			console.log(err);
-		} else {
-			res.json();
-		}
+		var query = "SELECT id, name, genre FROM band";
+		executeQuery(query, [], function(err, result) {
+			if (err) {
+				console.log(err);
+			} else {
+				console.log(result);
+				res.json(result);
+			}
+		});
 	});
 
 	/*
@@ -124,11 +194,15 @@
 	* Returns: ‘success’ or ‘failed’
 	*/
 	app.post("/removeArtistForBand", function(req, res) {
-		if (err) {
-			console.log(err);
-		} else {
-			res.json();
-		}
+		var query = "SELECT id, name, genre FROM band";
+		executeQuery(query, [], function(err, result) {
+			if (err) {
+				console.log(err);
+			} else {
+				console.log(result);
+				res.json(result);
+			}
+		});
 	});
 
 // ---------- Albums ----------
@@ -139,11 +213,15 @@
 	* Returns: [{band-id : ‘val’, name : ‘val’}, {...}, ...}]
 	*/
 	app.get("/getAlbums", function(req, res) {
-		if (err) {
-			console.log(err);
-		} else {
-			res.json();
-		}
+		var query = "SELECT id, name, genre FROM band";
+		executeQuery(query, [], function(err, result) {
+			if (err) {
+				console.log(err);
+			} else {
+				console.log(result);
+				res.json(result);
+			}
+		});
 	});
 
 	/*
@@ -152,11 +230,15 @@
 	* Returns: {band-id : ‘val’, name : ‘val’}
 	*/
 	app.get("/getAlbumsForArtist", function(req, res) {
-		if (err) {
-			console.log(err);
-		} else {
-			res.json();
-		}
+		var query = "SELECT id, name, genre FROM band";
+		executeQuery(query, [], function(err, result) {
+			if (err) {
+				console.log(err);
+			} else {
+				console.log(result);
+				res.json(result);
+			}
+		});
 	});
 
 	/*
@@ -165,11 +247,15 @@
 	* Returns album-id (-1 for fail)
 	*/
 	app.post("/addAlbum", function(req, res) {
-		if (err) {
-			console.log(err);
-		} else {
-			res.json();
-		}
+		var query = "SELECT id, name, genre FROM band";
+		executeQuery(query, [], function(err, result) {
+			if (err) {
+				console.log(err);
+			} else {
+				console.log(result);
+				res.json(result);
+			}
+		});
 	});
 
 	/*
@@ -178,11 +264,15 @@
 	* Returns : ‘success’ or ‘failed’
 	*/
 	app.post("/updateAlbum", function(req, res) {
-		if (err) {
-			console.log(err);
-		} else {
-			res.json();
-		}
+		var query = "SELECT id, name, genre FROM band";
+		executeQuery(query, [], function(err, result) {
+			if (err) {
+				console.log(err);
+			} else {
+				console.log(result);
+				res.json(result);
+			}
+		});
 	});
 
 	/*
@@ -191,11 +281,15 @@
 	* Returns: ‘success’ or ‘failed’
 	*/
 	app.post("/removeAlbum", function(req, res) {
-		if (err) {
-			console.log(err);
-		} else {
-			res.json();
-		}
+		var query = "SELECT id, name, genre FROM band";
+		executeQuery(query, [], function(err, result) {
+			if (err) {
+				console.log(err);
+			} else {
+				console.log(result);
+				res.json(result);
+			}
+		});
 	});
 
 // ---------- Songs ----------
@@ -206,11 +300,15 @@
 	* Returns: [{song-id : ‘val’, name : ‘val’}, {...}, … ]
 	*/
 	app.get("/getSongs", function(req, res) {
-		if (err) {
-			console.log(err);
-		} else {
-			res.json();
-		}
+		var query = "SELECT id, name, genre FROM band";
+		executeQuery(query, [], function(err, result) {
+			if (err) {
+				console.log(err);
+			} else {
+				console.log(result);
+				res.json(result);
+			}
+		});
 	});
 
 	/*
@@ -219,11 +317,15 @@
 	* Returns:[{song-id : ‘val’, name : ‘val’}, {...}, … ]
 	*/
 	app.get("/getSongsForAlbum", function(req, res) {
-		if (err) {
-			console.log(err);
-		} else {
-			res.json();
-		}
+		var query = "SELECT id, name, genre FROM band";
+		executeQuery(query, [], function(err, result) {
+			if (err) {
+				console.log(err);
+			} else {
+				console.log(result);
+				res.json(result);
+			}
+		});
 	});
 
 	/*
@@ -232,11 +334,15 @@
 	* Returns: song-id
 	*/
 	app.post("/addSong", function(req, res) {
-		if (err) {
-			console.log(err);
-		} else {
-			res.json();
-		}
+		var query = "SELECT id, name, genre FROM band";
+		executeQuery(query, [], function(err, result) {
+			if (err) {
+				console.log(err);
+			} else {
+				console.log(result);
+				res.json(result);
+			}
+		});
 	});
 
 	/*
@@ -245,11 +351,15 @@
 	* Returns : ‘success’ or ‘failed’
 	*/
 	app.post("/updateSong", function(req, res) {
-		if (err) {
-			console.log(err);
-		} else {
-			res.json();
-		}
+		var query = "SELECT id, name, genre FROM band";
+		executeQuery(query, [], function(err, result) {
+			if (err) {
+				console.log(err);
+			} else {
+				console.log(result);
+				res.json(result);
+			}
+		});
 	});
 
 	/*
@@ -258,11 +368,15 @@
 	* Returns: 'success' or 'failed'
 	*/
 	app.post("/removeSong", function(req, res) {
-		if (err) {
-			console.log(err);
-		} else {
-			res.json();
-		}
+		var query = "SELECT id, name, genre FROM band";
+		executeQuery(query, [], function(err, result) {
+			if (err) {
+				console.log(err);
+			} else {
+				console.log(result);
+				res.json(result);
+			}
+		});
 	});
 
 // ---------- Contributers ----------
@@ -273,11 +387,15 @@
 	* Returns: [ {artist-id : ‘val’, first-name : ‘val’, last-name : ‘val’, …}, {...}, … ]
 	*/
 	app.get("/getContributersForSong", function(req, res) {
-		if (err) {
-			console.log(err);
-		} else {
-			res.json();
-		}
+		var query = "SELECT id, name, genre FROM band";
+		executeQuery(query, [], function(err, result) {
+			if (err) {
+				console.log(err);
+			} else {
+				console.log(result);
+				res.json(result);
+			}
+		});
 	});
 
 	/*
@@ -286,11 +404,15 @@
 	* Returns: ‘success’ or ‘failed’
 	*/
 	app.post("/addContributerForSong", function(req, res) {
-		if (err) {
-			console.log(err);
-		} else {
-			res.json();
-		}
+		var query = "SELECT id, name, genre FROM band";
+		executeQuery(query, [], function(err, result) {
+			if (err) {
+				console.log(err);
+			} else {
+				console.log(result);
+				res.json(result);
+			}
+		});
 	});
 
 	/*
@@ -299,11 +421,15 @@
 	* Returns: ‘success’ or ‘failed’
 	*/
 	app.post("/removeContributerForSong", function(req, res) {
-		if (err) {
-			console.log(err);
-		} else {
-			res.json();
-		}
+		var query = "SELECT id, name, genre FROM band";
+		executeQuery(query, [], function(err, result) {
+			if (err) {
+				console.log(err);
+			} else {
+				console.log(result);
+				res.json(result);
+			}
+		});
 	});
 
 	console.log("Server listening on port 3000."); 
