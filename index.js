@@ -52,8 +52,8 @@ var executeQuery = function(query, parameters, callback) {
 // ---------- Bands ----------
 	/* 
 	* Get an array of all bands
-	* Takes: {name : “val” , genre : ‘val’} 
-	* Returns: band-id (-1 for fail)
+	* Takes: nothing
+	* Returns: [ {bandId : “val”, name : “val”, genre : ‘val’}, {...}, ... ]
 	*/
 	app.get("/getBands", function(req, res) {
 		var query = "SELECT id, name, genre FROM band";
@@ -70,33 +70,38 @@ var executeQuery = function(query, parameters, callback) {
 	/* 
 	* Insert a new band into the database and get the insert id
 	* Takes: {name : “val” , genre : ‘val’} 
-	* Returns: band-id (-1 for fail)
+	* Returns: {bandId : 'val'} (-1 for fail)
 	*/
 	app.post("/addBand", function(req, res) {
-		var query = "SELECT id, name, genre FROM band";
-		executeQuery(query, [], function(err, result) {
+		var query = "INSERT INTO band SET name = ?, genre = ?";
+		executeQuery(query, [req.body.name, req.body.genre], function(err, result) {
 			if (err) {
 				console.log(err);
 			} else {
-				console.log(result);
-				res.json(result);
+				console.log({bandId : result.insertId});
+				res.json({bandId : result.insertId});
 			}
 		});
 	});
 
 	/*
-	* Update an existing band by id.  A variable number of fields can be changed at once.
-	* Takes: {band-id : ‘val’, field1 : ‘val’, field2 : ‘val’}  fields not included won’t be changed
+	* Update an existing band by id. 
+	* Takes: {bandId : ‘val’, name : “val” , genre : ‘val’} 
 	* Returns: ‘success’ or ‘failed’
 	*/
 	app.post("/updateBand", function(req, res) {
-		var query = "SELECT id, name, genre FROM band";
-		executeQuery(query, [], function(err, result) {
+		var query = "UPDATE band SET name = ?, genre = ? WHERE id = ?";
+		executeQuery(query, [req.body.name, req.body.genre, req.body.bandId], function(err, result) {
 			if (err) {
 				console.log(err);
 			} else {
 				console.log(result);
-				res.json(result);
+				if (result.affectedRows) {
+					res.json('success');
+				}
+				else {
+					res.json('failed');
+				}
 			}
 		});
 	});
@@ -106,10 +111,10 @@ var executeQuery = function(query, parameters, callback) {
 	/*
 	* Get an array of all artists
 	* Takes: nothing
-	* Returns: array [ {artist-id : “val”, name : “val”, genre : ‘val’}, {...}, ... ]
+	* Returns: array [ {artistId : ‘val’, first-name : ‘val’, last-name : ‘val’, instrument : ‘val’, genre : ‘val’}, {...}, … ]
 	*/
 	app.get("/getArtists", function(req, res) {
-		var query = "SELECT id, name, genre FROM band";
+		var query = "SELECT id, first_name, last_name, instrument, genre FROM artist";
 		executeQuery(query, [], function(err, result) {
 			if (err) {
 				console.log(err);
@@ -121,13 +126,13 @@ var executeQuery = function(query, parameters, callback) {
 	});
 
 	/*
-	* Get a list of artists that make up a band based on band-id
-	* Takes: band-id
-	* Returns: [ {artist-id : ‘val’, first-name : ‘val’, last-name : ‘val’, …}, {...}, … ]
+	* Get a list of artists that make up a band based on bandId
+	* Takes: {bandId : 'val'}
+	* Returns: [ {artistId : ‘val’, first-name : ‘val’, last-name : ‘val’, instrument : ‘val’, genre : ‘val’}, {...}, … ]
 	*/
 	app.get("/getArtistsForBand", function(req, res) {
-		var query = "SELECT id, name, genre FROM band";
-		executeQuery(query, [], function(err, result) {
+		var query = "SELECT a.id, a.first_name, a.last_name, a.instrument, a.genre FROM artist a INNER JOIN artist_for_band b ON a.id = b.artist_id WHERE b.band_id = ?";
+		executeQuery(query, [req.query.bandId], function(err, result) {
 			if (err) {
 				console.log(err);
 			} else {
@@ -139,68 +144,87 @@ var executeQuery = function(query, parameters, callback) {
 
 	/*
 	* Insert a new artist into the database and get its
-	* Takes: {first-name : “val”, last-name : ‘val’, instrument : ‘val’}
+	* Takes: {first-name : ‘val’, last-name : ‘val’, instrument : ‘val’, genre : ‘val’}
 	* Returns : id (-1 for fail)
 	*/
 	app.post("/addArtist", function(req, res) {
-		var query = "SELECT id, name, genre FROM band";
-		executeQuery(query, [], function(err, result) {
+		var query = "INSERT INTO artist SET first_name = ?, last_name = ?, instrument = ?, genre = ?";
+		var body = req.body.
+		executeQuery(query, [body['first-name'], body['last-name'], body['instrument'], body['genre']], function(err, result) {
 			if (err) {
 				console.log(err);
 			} else {
-				console.log(result);
-				res.json(result);
+				console.log({artistId : result.insertId});
+				res.json({artistId : result.insertId});
 			}
 		});
 	});
 	
 	/*
-	* Update a given artist based on id.  A variable number of fields can be changed at once.
-	* Takes: {artist-id : ‘val’, field1 : ‘val’, field2 : ‘val’, …} fields not included won’t be changed
+	* Update a given artist based on id. 
+	* Takes: {artistId : ‘val’, first-name : ‘val’, last-name : ‘val’, instrument : ‘val’, genre : ‘val’}
 	* Returns : ‘success’ or ‘failed’
 	*/
 	app.post("/updateArtist", function(req, res) {
-		var query = "SELECT id, name, genre FROM band";
-		executeQuery(query, [], function(err, result) {
+		var query = "UPDATE artist SET first_name = ?, last_name = ?, instrument = ?, genre = ? WHERE id = ?";
+		var body = req.body;
+		executeQuery(query, [body['first-name'], body['last-name'], body['instrument'], body['genre'], body['artistId']], function(err, result) {
 			if (err) {
 				console.log(err);
 			} else {
 				console.log(result);
-				res.json(result);
+				if (result.affectedRows) {
+					res.json('success');
+				}
+				else {
+					res.json('failed');
+				}
 			}
 		});
 	});
 
 	/*
 	* Add an artist to a band based on existing ids
-	* Takes: {band-id : ‘val’, artist-id : ‘val’}
+	* Takes: {bandId : ‘val’, artistId : ‘val’}
 	* Returns: ‘success’ or ‘failed’
 	*/
 	app.post("/addArtistForBand", function(req, res) {
-		var query = "SELECT id, name, genre FROM band";
-		executeQuery(query, [], function(err, result) {
+		var query = "INSERT INTO artist_for_band SET band_id = ?, artist_id = ?";
+		executeQuery(query, [req.body.bandId, req.body.artistId], function(err, result) {
 			if (err) {
 				console.log(err);
 			} else {
+				console.log({bandId : result.insertId});
 				console.log(result);
-				res.json(result);
+				if (result.affectedRows) {
+					res.json('success');
+				}
+				else {
+					res.json('failed');
+				}
 			}
 		});
 	});
 
 	/*
 	* Remove a given artist from a given band based on existing ids
-	* Takes: {band-id : ‘val’, artist-id : ‘val’}
+	* Takes: {bandId : ‘val’, artistId : ‘val’}
 	* Returns: ‘success’ or ‘failed’
 	*/
 	app.post("/removeArtistForBand", function(req, res) {
-		var query = "SELECT id, name, genre FROM band";
-		executeQuery(query, [], function(err, result) {
+		var query = "DELETE FROM artist_for_band WHERE band_id = ? AND artist_id = ?";
+		var body = req.body;
+		executeQuery(query, [body.bandId, body.artistId], function(err, result) {
 			if (err) {
 				console.log(err);
 			} else {
 				console.log(result);
-				res.json(result);
+				if (result.affectedRows) {
+					res.json('success');
+				}
+				else {
+					res.json('failed');
+				}
 			}
 		});
 	});
@@ -210,10 +234,10 @@ var executeQuery = function(query, parameters, callback) {
 	/*
 	* Get an array of all albums
 	* Takes: nothing
-	* Returns: [{band-id : ‘val’, name : ‘val’}, {...}, ...}]
+	* Returns: [{albumId : 'val', bandId : ‘val’, name : ‘val’}, {...}, ...}]
 	*/
 	app.get("/getAlbums", function(req, res) {
-		var query = "SELECT id, name, genre FROM band";
+		var query = "SELECT id, band_id, name FROM album";
 		executeQuery(query, [], function(err, result) {
 			if (err) {
 				console.log(err);
@@ -225,13 +249,13 @@ var executeQuery = function(query, parameters, callback) {
 	});
 
 	/*
-	* Get an array of albums for a given artist id
-	* Takes: artist-id
-	* Returns: {band-id : ‘val’, name : ‘val’}
+	* Get an array of albums for a given band id
+	* Takes: {bandId : 'val'}
+	* Returns: {albumId : 'val', bandId : ‘val’, name : ‘val’}
 	*/
-	app.get("/getAlbumsForArtist", function(req, res) {
-		var query = "SELECT id, name, genre FROM band";
-		executeQuery(query, [], function(err, result) {
+	app.get("/getAlbumsForBand", function(req, res) {
+		var query = "SELECT id, band_id, name FROM album WHERE band_id = ?";
+		executeQuery(query, [req.query.bandId], function(err, result) {
 			if (err) {
 				console.log(err);
 			} else {
@@ -243,51 +267,61 @@ var executeQuery = function(query, parameters, callback) {
 
 	/*
 	* Insert a new album based on a given band
-	* Takes: {band-id : ‘val’, name : ‘val’}
-	* Returns album-id (-1 for fail)
+	* Takes: {bandId : ‘val’, name : ‘val’}
+	* Returns {albumId : 'val'} (-1 for fail)
 	*/
 	app.post("/addAlbum", function(req, res) {
-		var query = "SELECT id, name, genre FROM band";
-		executeQuery(query, [], function(err, result) {
+		var query = "INSERT INTO album SET band_id = ?, name = ?";
+		executeQuery(query, [req.body.bandId, req.body.name], function(err, result) {
 			if (err) {
 				console.log(err);
 			} else {
-				console.log(result);
-				res.json(result);
+				console.log({albumId : result.insertId});
+				res.json({albumId : result.insertId});
 			}
 		});
 	});
 
 	/*
-	* Update a given album based on id.  A variable number of fields can be changed at once. 
-	* Takes: {album-id : ‘val’, field1 : ‘val’, field2 : ‘val’, …} fields not included won’t be changed
+	* Update a given album based on id.
+	* Takes: {albumId : ‘val’, bandId : ‘val’, name : ‘val’}
 	* Returns : ‘success’ or ‘failed’
 	*/
 	app.post("/updateAlbum", function(req, res) {
-		var query = "SELECT id, name, genre FROM band";
-		executeQuery(query, [], function(err, result) {
+		var query = "UPDATE album SET name = ?, genre = ? WHERE id = ?";
+		executeQuery(query, [req.body.name, req.body.genre, req.body.albumId], function(err, result) {
 			if (err) {
 				console.log(err);
 			} else {
 				console.log(result);
-				res.json(result);
+				if (result.affectedRows) {
+					res.json('success');
+				}
+				else {
+					res.json('failed');
+				}
 			}
 		});
 	});
 
 	/*
 	* Remove an existing album based on id
-	* Takes: album-id
+	* Takes: {albumId : 'val'}
 	* Returns: ‘success’ or ‘failed’
 	*/
 	app.post("/removeAlbum", function(req, res) {
-		var query = "SELECT id, name, genre FROM band";
-		executeQuery(query, [], function(err, result) {
+		var query = "DELETE FROM album WHRE id = ?";
+		executeQuery(query, [req.body.albumId], function(err, result) {
 			if (err) {
 				console.log(err);
 			} else {
 				console.log(result);
-				res.json(result);
+				if (result.affectedRows) {
+					res.json('success');
+				}
+				else {
+					res.json('failed');
+				}
 			}
 		});
 	});
@@ -297,10 +331,10 @@ var executeQuery = function(query, parameters, callback) {
 	/*
 	* Get an array of all songs
 	* Takes: nothing
-	* Returns: [{song-id : ‘val’, name : ‘val’}, {...}, … ]
+	* Returns: [{songId : ‘val’, name : ‘val’}, {...}, … ]
 	*/
 	app.get("/getSongs", function(req, res) {
-		var query = "SELECT id, name, genre FROM band";
+		var query = "SELECT id, album_id, name, FROM song";
 		executeQuery(query, [], function(err, result) {
 			if (err) {
 				console.log(err);
@@ -313,12 +347,12 @@ var executeQuery = function(query, parameters, callback) {
 
 	/*
 	* Get an array of songs based on an existing album
-	* Takes: album-id
-	* Returns:[{song-id : ‘val’, name : ‘val’}, {...}, … ]
+	* Takes: {albumId : 'val'}
+	* Returns:[{songId : ‘val’, name : ‘val’}, {...}, … ]
 	*/
 	app.get("/getSongsForAlbum", function(req, res) {
-		var query = "SELECT id, name, genre FROM band";
-		executeQuery(query, [], function(err, result) {
+		var query = "SELECT id, album_id, name, FROM song WHERE album_id = ?";
+		executeQuery(query, [req.query.albumId], function(err, result) {
 			if (err) {
 				console.log(err);
 			} else {
@@ -330,51 +364,61 @@ var executeQuery = function(query, parameters, callback) {
 
 	/*
 	* Add a new song for a given album id
-	* Takes: {album-id : ‘val’, name : ‘val’}
-	* Returns: song-id
+	* Takes: {albumId : ‘val’, name : ‘val’}
+	* Returns: {songId : 'val'}
 	*/
 	app.post("/addSong", function(req, res) {
-		var query = "SELECT id, name, genre FROM band";
-		executeQuery(query, [], function(err, result) {
+		var query = "INSERT INTO song SET name = ?, album_id = ?";
+		executeQuery(query, [req.body.name, req.query.albumId], function(err, result) {
 			if (err) {
 				console.log(err);
 			} else {
-				console.log(result);
-				res.json(result);
+				console.log({songId : result.insertId});
+				res.json({songId : result.insertId});
 			}
 		});
 	});
 
 	/*
-	* Update a given song based on id.  A variable number of fields can be changed at once. 
-	* Takes: {song-id : ‘val’, field1 : ‘val’, field2 : ‘val’, …} fields not included won’t be changed
+	* Update a given song based on id.
+	* Takes: {songId : ‘val’, albumId : ‘val’, name : ‘val’}
 	* Returns : ‘success’ or ‘failed’
 	*/
 	app.post("/updateSong", function(req, res) {
-		var query = "SELECT id, name, genre FROM band";
-		executeQuery(query, [], function(err, result) {
+		var query = "UPDATE song SET name = ?, album_id = ? WHERE id = ?";
+		executeQuery(query, [req.body.name, req.body.albumId, req.body.songId], function(err, result) {
 			if (err) {
 				console.log(err);
 			} else {
 				console.log(result);
-				res.json(result);
+				if (result.affectedRows) {
+					res.json('success');
+				}
+				else {
+					res.json('failed');
+				}
 			}
 		});
 	});
 
 	/*
 	* Remove a song for an existing id 
-	* Takes: song-id
+	* Takes: {songId : 'val'}
 	* Returns: 'success' or 'failed'
 	*/
 	app.post("/removeSong", function(req, res) {
-		var query = "SELECT id, name, genre FROM band";
-		executeQuery(query, [], function(err, result) {
+		var query = "DELETE FROM song WHERE id = ?";
+		executeQuery(query, [req.body.songId], function(err, result) {
 			if (err) {
 				console.log(err);
 			} else {
 				console.log(result);
-				res.json(result);
+				if (result.affectedRows) {
+					res.json('success');
+				}
+				else {
+					res.json('failed');
+				}
 			}
 		});
 	});
@@ -383,12 +427,12 @@ var executeQuery = function(query, parameters, callback) {
 
 	/*
 	* Get an array of artists contributing to a song based on existing song id
-	* Takes: song-id
-	* Returns: [ {artist-id : ‘val’, first-name : ‘val’, last-name : ‘val’, …}, {...}, … ]
+	* Takes: {songId : 'val'}
+	* Returns: [ {artistId : ‘val’, first-name : ‘val’, last-name : ‘val’, …}, {...}, … ]
 	*/
 	app.get("/getContributersForSong", function(req, res) {
-		var query = "SELECT id, name, genre FROM band";
-		executeQuery(query, [], function(err, result) {
+		var query = "SELECT a.id, a.first_name, a.last_name, a.instrument, a.genre FROM artist a INNER JOIN contributer_for_song s ON a.id = s.artist_id WHERE s.song_id = ?";
+		executeQuery(query, [req.query.songId], function(err, result) {
 			if (err) {
 				console.log(err);
 			} else {
@@ -400,34 +444,44 @@ var executeQuery = function(query, parameters, callback) {
 
 	/*
 	* Add a contributer based on a given song and artist id
-	* Takes: {song-id : ‘val’, artist-id : ‘val’}
+	* Takes: {songId : ‘val’, artistId : ‘val’}
 	* Returns: ‘success’ or ‘failed’
 	*/
 	app.post("/addContributerForSong", function(req, res) {
-		var query = "SELECT id, name, genre FROM band";
-		executeQuery(query, [], function(err, result) {
+		var query = "INSERT INTO contributer_for_song SET song_id = ?, artist_id = ?";
+		executeQuery(query, [req.body.songId, req.body.artistId], function(err, result) {
 			if (err) {
 				console.log(err);
 			} else {
 				console.log(result);
-				res.json(result);
+				if (result.affectedRows) {
+					res.json('success');
+				}
+				else {
+					res.json('failed');
+				}
 			}
 		});
 	});
 
 	/*
 	* Remove a contributer based on an existing song and artist id
-	* Takes: {song-id : ‘val’, artist-id : ‘val’}
+	* Takes: {songId : ‘val’, artistId : ‘val’}
 	* Returns: ‘success’ or ‘failed’
 	*/
 	app.post("/removeContributerForSong", function(req, res) {
-		var query = "SELECT id, name, genre FROM band";
-		executeQuery(query, [], function(err, result) {
+		var query = "DELETE FROM contributer_for_song WHERE song_id = ? AND artist_id = ?";
+		executeQuery(query, [req.body.songId, req.body.artistId], function(err, result) {
 			if (err) {
 				console.log(err);
 			} else {
 				console.log(result);
-				res.json(result);
+				if (result.affectedRows) {
+					res.json('success');
+				}
+				else {
+					res.json('failed');
+				}
 			}
 		});
 	});
