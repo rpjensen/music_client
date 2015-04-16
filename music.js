@@ -9,89 +9,178 @@
 
     //artist controller
     app.controller('ArtistController', ['$scope', function($scope) {
-		$scope.name = '';
+		// Holds the temporary add artist input values
+        $scope.firstName = '';
+        $scope.lastName = '';
         $scope.genre = '';
         $scope.instrument = '';
+
+        $scope.artists = [];// holds a list of existing artists that are backed up to the server
         
-        //how does this work?
-		$.getJSON('getArtist', function(result) {
-			$scope.artist = result;
+        //how does this work? Makes a web call, triggers a function that queries the DB for all the songs and returns the formatted result
+		$.getJSON('getArtists', function(result) {
+            // Result returns [ {artistId : ‘val’, first-name : ‘val’, last-name : ‘val’, instrument : ‘val’, genre : ‘val’}, {...}, … ]
+            // This 'should' reset the client list you have with what the database returned
+			$scope.artists = result;
 		});
 
 		$scope.add = function() {
+            // The field names need to match the serverside api
 			var newArtist = {
-				"name" : $scope.name,
+				"first-name" : $scope.firstName,
+                "last-name" : $scope.lastName,
 				"genre" : $scope.genre,
 				"instrument" : $scope.instrument
 			};
             //***HELP PLEASE! :) ***
-            //needs output to look like this: body['first-name'], body['last-name'], body['instrument'], body['genre']
-			$scope.artist.push(newArtist); //does this add to the db?
-			$.post('putArtist', newArtist); //or does this add to the db?
-            
-            //this is a repeat from above. why is that a thing?
-            $scope.name = '';
-            $scope.genre = '';
-            $scope.instrument = '';
+			$.post('addArtist', newArtist, function(result) {
+                // result is the new artist's id or -1 if it failed to insert
+                if (result != -1) {
+                    newArtist.id = result;// add the id to the object before putting it in the array
+                    $scope.artists.push(newArtist); //does this add to the db?
+                    // This adds it to the local list (basically the client copy)
+                    //clear input form now that we know they were added successfully
+                    //this is a repeat from above. why is that a thing?
+                    // if you got values from these variables this should clear the form
+                    $scope.firstName = '';
+                    $scope.lastName = '';
+                    $scope.genre = '';
+                    $scope.instrument = '';
+                }
+                else {
+                    // some sort of 'error saving artist' message or whatever
+                    // Don't clear the field so they can attempt to add the data again when the connection is better or something
+                }
+            });
+
 		};
 		
         //deletes an artist from the db?
 		$scope.remove = function(artist) {
-			$scope.artist.splice($scope.artist.indexOf(artist), 1);
-			$.post('removeArtist', artist);
+            // remove artist needs the id of the artist you would like to remove
+			$.post('removeArtist', {artistId : artist.id}, function(result) {
+                if (result === "success") {
+                    // it was removed on the server, now make the client reflect that change
+                    $scope.artists.splice($scope.artists.indexOf(artist), 1);
+                }
+                else {
+                    // some sort of 'error removing album' message or whatever
+                    // don't remove it so they can try again later
+                }
+            });
 		};									 
 	}]);
     
     //album controller
     app.controller('AlbumController', ['$scope', function($scope) {
+        // Holds the temporary add album input values
+        $scope.bandId = -1;// this should come from whatever band we are trying to add the album to
         $scope.album = '';
-        $scope.release_date = '';
+       // $scope.release_date = ''; // not messing with release_date yet
+
+        $scope.albums = [];
         
-        $.getJSON('getAlbum', function(result){
-            $scope.album = result;
+        $.getJSON('getAlbums', function(result){
+            // Kat: The result is an array of ALL existing albums [{albumId : 'val', bandId : ‘val’, name : ‘val’}, {...}, ...}]
+            // Use /getAlbumForBand if you want the albums for a particular band
+            /*
+            * Get an array of albums for a given band id
+            * Takes: {bandId : 'val'}
+            * Returns: {albumId : 'val', bandId : ‘val’, name : ‘val’}
+            */
+            $scope.albums = result;
         });
         
         $scope.add = function() {
+            // Kat: needs band id and the api field for album name is just 'name' (right now I haven't done anything with release date since its harder to display nicely)
+            // We can get bandId by making the person add albums in the context of a band (like an add button off a band row)
+            // Might even be something like $scope.band.id if we have a reference to a band object instead of just its id
             var newAlbum = {
-                "album" : $scope.album,
-                "release_date" : $scope.release_date
+                "bandId" : $scope.bandId,
+                "name" : $scope.album,
             };
-            $scope.album.push(newAlbum);
-            $.post('putAlbum', newAlbum);
+            // "release_date" : $scope.release_date
+            $.post('addAlbum', newAlbum, function(result) {
+                if (result != -1) {
+                    newAlbum.id = result;
+                    $scope.albums.push(newAlbum); //does this add to the db?
+                    // This adds it to the local list (basically the client copy)
+                    //clear input form now that we know they were added successfully
+                    //this is a repeat from above. why is that a thing?
+                    // if you got values from these variables this should clear the form
+                    $scope.bandId = '';
+                    $scope.album = '';
+                    //$scope.release_date = '';
+                }
+                else {
+                    // some sort of 'error saving album' message or whatever
+                    // Don't clear the field so they can attempt to add the data again when the connection is better or something
+                }
+            });
             
-            $scope.album = '';
-            $scope.release_date = '';
+           
         };
         
         $scope.remove = function(album) {
-            $scope.album.splice($scope.album.indexOf(album), 1);
-            $.post('removeAblum', album);
+            // api takes the album id that we have been holding onto for each album and removes using that id
+            $.post('removeAlbum', {albumId : album.id}, function(result) {
+                if (result === "success") {
+                    // it was removed on the server, now make the client reflect that
+                    $scope.album.splice($scope.albums.indexOf(albums), 1);
+                }
+                else {
+                    // some sort of 'error removing album' message or whatever
+                }
+            });
         };
     }]);
     
     app.controller('SongController', ['$scope', function($scope){
-        $scope.song_name = '';
-        $scope.album = '';
+        $scope.name = '';
+
+        $scope.songs = [];
         
-        $getJSON('getSong', function(result) {
-            $scope.song = result;
+        $getJSON('getSongs', function(result) {
+            $scope.songs = result;
         });
         
         $scope.add = function() {
             var newSong = {
-            "song name" : $scope.song_name,
-            "album" : $scope.album
+                "name" : $scope.name,
+                "albumId" : $scope.albumId
+            };
+
+            $.post('addSong', newSong, function(result) {
+                // result has the id of the newly inserted song or -1 if it failed to insert
+                if (result != -1) {
+                    newSong.id = result;
+                    $scope.songs.push(newSong); //does this add to the db?
+                    // This adds it to the local list (basically the client copy)
+                    //clear input form now that we know they were added successfully
+                    //this is a repeat from above. why is that a thing?
+                    // if you got values from these variables this should clear the form
+                    $scope.name = '';
+                }
+                else {
+                    // some sort of 'error saving song' message or whatever
+                    // Don't clear the field so they can attempt to add the data again when the connection is better or something
+                }
+            });
+            
+            
         };
-        $scope.song_name.push(newSong);
-        $.post('putSong', newSong);
         
-        $scope.song_name = '';
-        $scope.album = '';
-        };
-        
-        $scope.remove = function(song_name) {
-            $scope.song_name.splice($scope.song_name.indexOf(song_name), 1);
-            $.post('removeSong', song_name);
+        $scope.remove = function(song) {
+            // api takes the song id and removes based on that value
+            $.post('removeSong', {songId : song.id}, function(result) {
+                if (result === "success") {
+                    // it was removed on the server, now make the client reflect that
+                    $scope.songs.splice($scope.songs.indexOf(song), 1);
+                }
+                else {
+                    // some sort of 'error removing song' message or whatever
+                }
+            });
         };
     }]);
     

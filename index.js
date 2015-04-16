@@ -331,7 +331,7 @@ var executeQuery = function(query, parameters, callback) {
 	/*
 	* Get an array of all songs
 	* Takes: nothing
-	* Returns: [{songId : ‘val’, name : ‘val’}, {...}, … ]
+	* Returns: [{songId : ‘val’, name : ‘val’, albumId : 'val'}, {...}, … ]
 	*/
 	app.get("/getSongs", function(req, res) {
 		var query = "SELECT id, album_id, name, FROM song";
@@ -348,7 +348,7 @@ var executeQuery = function(query, parameters, callback) {
 	/*
 	* Get an array of songs based on an existing album
 	* Takes: {albumId : 'val'}
-	* Returns:[{songId : ‘val’, name : ‘val’}, {...}, … ]
+	* Returns:[{songId : ‘val’, name : ‘val’, albumId : 'val'}, {...}, … ]
 	*/
 	app.get("/getSongsForAlbum", function(req, res) {
 		var query = "SELECT id, album_id, name, FROM song WHERE album_id = ?";
