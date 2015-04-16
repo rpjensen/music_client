@@ -7,12 +7,12 @@
     <body>
         <div class="header"><img src="header.jpeg"></div>
         <div class="content">
-        <div ng-controller="MusicianController">
+        <div ng-controller="ArtistController">
             <p>Press 'All' for a complete list of the musicians in our database.</p>
-            <button ng-click>All</button>
+<!--            <button ng-click>All</button>-->
             <div class="artist">
                 <h2>Artist</h2>
-                <p>Enter the data for a musician and press submit.</p>
+                <p>Enter the information for an artist and press Submit to add them to the artist database.</p>
                 <input type="text" ng-model="first_name" placeholder="First name">
                 <input type="text" ng-model="last_name" placeholder="Last name">
                 <p>Instrument</p>
@@ -24,14 +24,14 @@
                 <input type="text" ng-model="new_instrument" placeholder="Add new instrument"><br>
                 <input type="text" ng-model="genre" placeholder="Genre">
                 <button ng-disabled="!(first.length && genre.length && instrument.length)"
-                                ng-click="add()">Add</button>
+                                ng-click="add()">Submit</button>
             </div>
-            
+<!--
             <div class="album">
                 <h2>Album</h2>
                 <input type="text" ng-model="album" placeholder="Album">
                 <p>Release Date</p>
-                <input type="month" ng-model="release_date"> <!--this might not be the right input type-->
+                <input type="month" ng-model="release_date">
             </div>
             
             <div class="song">
@@ -42,10 +42,10 @@
             
             <div class="event">
                 <h2>Events</h2>
-                <input type="date" ng-model="event_date"> <!--this might not be the right input type-->
+                <input type="date" ng-model="event_date"> 
                 <input type="textbox" ng-model="description">
             </div>
-            
+-->
             <table>
                 <tr ng-repeat="m in musicians">
                     <td>{{m.name}}</td>
