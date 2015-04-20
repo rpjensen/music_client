@@ -23,7 +23,7 @@
                 <input type="checkbox" ng-model="other">Other
                 <input type="text" ng-model="new_instrument" placeholder="Add new instrument"><br>
                 <input type="text" ng-model="genre" placeholder="Genre">
-                <button ng-disabled="!(first.length && genre.length && instrument.length)" ng-click="addArtist">Add</button>
+                <button ng-click="addArtist" ng-disabled="!(first.length && genre.length && instrument.length)">Add</button>
             </div>
 <!--
             <div class="album">
@@ -60,7 +60,6 @@
             src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js">
         </script>
         <script src='client.js'></script>
-        <script src='server.js'></script>
     <div class="footer"><p>more feet</p></div>
     </body>
 </html>
