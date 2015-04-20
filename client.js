@@ -14,17 +14,16 @@
         $scope.lastName = '';
         $scope.genre = '';
         $scope.instrument = '';
-
-        $scope.artists = [];// holds a list of existing artists that are backed up to the server
         
+        $scope.artists = [];// holds a list of existing artists that are backed up to the server
         //how does this work? Makes a web call, triggers a function that queries the DB for all the songs and returns the formatted result
-		$.getJSON('getArtists', function(result) {
+		$.getJSON('/getArtists', function(result) {
             // Result returns [ {artistId : ‘val’, first-name : ‘val’, last-name : ‘val’, instrument : ‘val’, genre : ‘val’}, {...}, … ]
             // This 'should' reset the client list you have with what the database returned
 			$scope.artists = result;
 		});
 
-		$scope.add = function() {
+		$scope.addArtist = function() {
             // The field names need to match the serverside api
 			var newArtist = {
 				"first-name" : $scope.firstName,
@@ -33,7 +32,7 @@
 				"instrument" : $scope.instrument
 			};
             //***HELP PLEASE! :) ***
-			$.post('addArtist', newArtist, function(result) {
+			$.post('/addArtist', newArtist, function(result) {
                 // result is the new artist's id or -1 if it failed to insert
                 if (result != -1) {
                     newArtist.id = result;// add the id to the object before putting it in the array
