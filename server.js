@@ -3,7 +3,7 @@
 	
 	var express = require('express'),
 		http = require('http'),
-		app = express();
+		app = express(),
 		mysql = require('mysql'),
 		pool = mysql.createPool({
 			connectionLimit : 100,
