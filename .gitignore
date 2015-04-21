@@ -16,7 +16,7 @@ Icon?
 ehthumbs.db
 Thumbs.db
 
-node_modules/
+# node_modules/
 .sass-cache/
 public/stylesheets/*.css
 public/min/
