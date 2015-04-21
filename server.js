@@ -155,7 +155,7 @@ var executeQuery = function(query, parameters, callback) {
 	*/
 	app.post("/addArtist", function(req, res) {
 		var query = "INSERT INTO artist SET first_name = ?, last_name = ?, instrument = ?, genre = ?";
-		var body = req.body.
+		var body = req.body;
 		executeQuery(query, [body['first_name'], body['last_name'], body['instrument'], body['genre']], function(err, result) {
 			if (err) {
 				console.log(err);
