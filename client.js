@@ -17,6 +17,7 @@
         
         $scope.artists = [];// holds a list of existing artists that are backed up to the server
         //how does this work? Makes a web call, triggers a function that queries the DB for all the songs and returns the formatted result
+<<<<<<< Updated upstream
 		$.getJSON('/getArtists', function(result) {
             // This 'should' reset the client list you have with what the database returned
 			$scope.artists = result;
@@ -29,27 +30,44 @@
                 "last_name" : $scope.lastName,
 				"genre" : $scope.genre,
 				"instrument" : $scope.instrument
+=======
+		var getArtists = function(){
+            $.getJSON('/getArtists', function(result) { //encapsulate in a function***
+                // Result returns [ {artistId : ‘val’, first-name : ‘val’, last-name : ‘val’, instrument : ‘val’, genre : ‘val’}, {...}, … ]
+                // This 'should' reset the client list you have with what the database returned
+                $scope.artists = result;
+            });    
+        }
+        
+		$scope.addArtist = function() {
+            // The field names need to match the serverside api
+			var newArtist = {
+				"first-name" : $scope.firstName,
+                "last-name" : $scope.lastName,
+				"instrument" : $scope.instrument,
+                "genre" : $scope.genre
+>>>>>>> Stashed changes
 			};
-            //***HELP PLEASE! :) ***
-			$.post('/addArtist', newArtist, function(result) {
-                // result is the new artist's id or -1 if it failed to insert
-                if (result != -1) {
-                    newArtist.id = result;// add the id to the object before putting it in the array
-                    $scope.artists.push(newArtist); //does this add to the db?
-                    // This adds it to the local list (basically the client copy)
-                    //clear input form now that we know they were added successfully
-                    //this is a repeat from above. why is that a thing?
-                    // if you got values from these variables this should clear the form
-                    $scope.firstName = '';
-                    $scope.lastName = '';
-                    $scope.genre = '';
-                    $scope.instrument = '';
-                }
-                else {
-                    // some sort of 'error saving artist' message or whatever
-                    // Don't clear the field so they can attempt to add the data again when the connection is better or something
-                }
-            });
+            console.log("new artist " + newArtist); // for testing
+//			$.post('/addArtist', newArtist, function(result) {
+//                // result is the new artist's id or -1 if it failed to insert
+//                if (result != -1) {
+//                    newArtist.id = result;// add the id to the object before putting it in the array
+//                    $scope.artists.push(newArtist); 
+//                    // This adds it to the local list (basically the client copy)
+//                    // clear input form now that we know they were added successfully
+//                    // this is a repeat from above. why is that a thing?
+//                    // if you got values from these variables this should clear the form
+//                    $scope.firstName = '';
+//                    $scope.lastName = '';
+//                    $scope.genre = '';
+//                    $scope.instrument = '';
+//                }
+//                else {
+//                    // some sort of 'error saving artist' message or whatever
+//                    // Don't clear the field so they can attempt to add the data again when the connection is better or something
+//                }
+//            });
 
 		};
 		
@@ -79,7 +97,7 @@
         $scope.albums = [];
         
         $.getJSON('getAlbums', function(result){
-            // Kat: The result is an array of ALL existing albums [{albumId : 'val', bandId : ‘val’, name : ‘val’}, {...}, ...}]
+            // Kate: The result is an array of ALL existing albums [{albumId : 'val', bandId : ‘val’, name : ‘val’}, {...}, ...}]
             // Use /getAlbumForBand if you want the albums for a particular band
            /*
             * Get an array of all albums
@@ -90,7 +108,7 @@
         });
         
         $scope.add = function() {
-            // Kat: needs band id and the api field for album name is just 'name' (right now I haven't done anything with release date since its harder to display nicely)
+            // Kate: needs band id and the api field for album name is just 'name' (right now I haven't done anything with release date since its harder to display nicely)
             // We can get bandId by making the person add albums in the context of a band (like an add button off a band row)
             // Might even be something like $scope.band.id if we have a reference to a band object instead of just its id
             var newAlbum = {

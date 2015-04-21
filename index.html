@@ -8,6 +8,7 @@
         <div class="header"><img src="header.jpeg"></div>
         <div class="content">
         <div ng-controller="ArtistController">
+<<<<<<< Updated upstream
             <p>Press 'All' for a complete list of the musicians in our database.</p>
             <button ng-click>View</button>
             <div class="artist">
@@ -24,6 +25,29 @@
                 <input type="text" ng-model="new_instrument" placeholder="Add new instrument"><br>
                 <input type="text" ng-model="genre" placeholder="Genre">
                 <button ng-click="addArtist" ng-disabled="!(first.length && genre.length && instrument.length)">Add</button>
+=======
+            <form novalidate>
+                <p>Press 'All' for a complete list of the musicians in our database.</p>
+    <!--            <button ng-click>View</button>-->
+                <div class="artist">
+                    <h2>Artist</h2>
+                    <p>Enter the information for an artist and press Submit to add them to the artist database.</p>
+                    <input type="text" ng-model="firstName">
+                    <input type="text" ng-model="lastName">
+    <!--
+                    <p>Instrument</p>
+                    <input type="checkbox" ng-model="guitar">Guitar<br>
+                    <input type="checkbox" ng-model="bass">Bass<br>
+                    <input type="checkbox" ng-model="drums">Drums<br>
+                    <input type="checkbox" ng-model="Tambourine">Tambourine<br>
+                    <input type="checkbox" ng-model="other">Other
+    -->
+                    <input type="text" ng-model="instrument" placeholder="Add new instrument"><br>
+                    <input type="text" ng-model="genre" placeholder="Genre">
+    <!--                <button ng-disabled="!(first.length && genre.length && instrument.length)" ng-click="addArtist">Add</button>-->
+                    <button ng-click="addArtist">Add</button>
+                </form>
+>>>>>>> Stashed changes
             </div>
 <!--
             <div class="album">
@@ -47,9 +71,10 @@
 -->
             <table>
                 <tr ng-repeat="m in musicians">
-                    <td>{{m.name}}</td>
-                    <td>{{m.genre}}</td>
+                    <td>{{m.first-name}}</td>
+                    <td>{{m.last-name}}</td>
                     <td>{{m.instrument}}</td>
+                    <td>{{m.genre}}</td>
                     <td><button ng-click="$parent.remove(m)">Remove</button></td>
                 </tr>
             </table>
