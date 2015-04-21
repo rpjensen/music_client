@@ -97,7 +97,7 @@ var executeQuery = function(query, parameters, callback) {
 	*/
 	app.post("/updateBand", function(req, res) {
 		var query = "UPDATE band SET name = ?, genre = ? WHERE id = ?";
-		executeQuery(query, [req.body.name, req.body.genre, req.body.bandId], function(err, result) {
+		executeQuery(query, [req.body.name, req.body.genre, req.body.id], function(err, result) {
 			if (err) {
 				console.log(err);
 			} else {
