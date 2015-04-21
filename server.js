@@ -127,12 +127,12 @@ var executeQuery = function(query, parameters, callback) {
 
 	/*
 	* Get a list of artists that make up a band based on bandId
-	* Takes: {id : 'val'}
+	* Takes: {band_id : 'val'}
 	* Returns: [ {id : ‘val’, first_name : ‘val’, last_name : ‘val’, instrument : ‘val’, genre : ‘val’}, {...}, … ]
 	*/
 	app.get("/getArtistsForBand", function(req, res) {
 		var query = "SELECT a.id, a.first_name, a.last_name, a.instrument, a.genre FROM artist a INNER JOIN artist_for_band b ON a.id = b.artist_id WHERE b.band_id = ?";
-		executeQuery(query, [req.query.bandId], function(err, result) {
+		executeQuery(query, [req.query.band_id], function(err, result) {
 			if (err) {
 				console.log(err);
 			} else {
