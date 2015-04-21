@@ -18,7 +18,6 @@
         $scope.artists = [];// holds a list of existing artists that are backed up to the server
         //how does this work? Makes a web call, triggers a function that queries the DB for all the songs and returns the formatted result
 		$.getJSON('/getArtists', function(result) {
-            // Result returns [ {artistId : ‘val’, first-name : ‘val’, last-name : ‘val’, instrument : ‘val’, genre : ‘val’}, {...}, … ]
             // This 'should' reset the client list you have with what the database returned
 			$scope.artists = result;
 		});
@@ -26,8 +25,8 @@
 		$scope.addArtist = function() {
             // The field names need to match the serverside api
 			var newArtist = {
-				"first-name" : $scope.firstName,
-                "last-name" : $scope.lastName,
+				"first_name" : $scope.firstName,
+                "last_name" : $scope.lastName,
 				"genre" : $scope.genre,
 				"instrument" : $scope.instrument
 			};
@@ -57,7 +56,7 @@
         //deletes an artist from the db?
 		$scope.remove = function(artist) {
             // remove artist needs the id of the artist you would like to remove
-			$.post('removeArtist', {artistId : artist.id}, function(result) {
+			$.post('removeArtist', {"id" : artist.id}, function(result) {
                 if (result === "success") {
                     // it was removed on the server, now make the client reflect that change
                     $scope.artists.splice($scope.artists.indexOf(artist), 1);
@@ -82,10 +81,10 @@
         $.getJSON('getAlbums', function(result){
             // Kat: The result is an array of ALL existing albums [{albumId : 'val', bandId : ‘val’, name : ‘val’}, {...}, ...}]
             // Use /getAlbumForBand if you want the albums for a particular band
-            /*
-            * Get an array of albums for a given band id
-            * Takes: {bandId : 'val'}
-            * Returns: {albumId : 'val', bandId : ‘val’, name : ‘val’}
+           /*
+            * Get an array of all albums
+            * Takes: nothing
+            * Returns: [{id : 'val', band_id : ‘val’, name : ‘val’}, {...}, ...}]
             */
             $scope.albums = result;
         });
@@ -95,7 +94,7 @@
             // We can get bandId by making the person add albums in the context of a band (like an add button off a band row)
             // Might even be something like $scope.band.id if we have a reference to a band object instead of just its id
             var newAlbum = {
-                "bandId" : $scope.bandId,
+                "id" : $scope.bandId,
                 "name" : $scope.album,
             };
             // "release_date" : $scope.release_date
@@ -122,7 +121,7 @@
         
         $scope.remove = function(album) {
             // api takes the album id that we have been holding onto for each album and removes using that id
-            $.post('removeAlbum', {albumId : album.id}, function(result) {
+            $.post('removeAlbum', {"id" : album.id}, function(result) {
                 if (result === "success") {
                     // it was removed on the server, now make the client reflect that
                     $scope.album.splice($scope.albums.indexOf(albums), 1);
@@ -146,7 +145,7 @@
         $scope.add = function() {
             var newSong = {
                 "name" : $scope.name,
-                "albumId" : $scope.albumId
+                "album_id" : $scope.albumId
             };
 
             $.post('addSong', newSong, function(result) {
@@ -171,7 +170,7 @@
         
         $scope.remove = function(song) {
             // api takes the song id and removes based on that value
-            $.post('removeSong', {songId : song.id}, function(result) {
+            $.post('removeSong', {"id" : song.id}, function(result) {
                 if (result === "success") {
                     // it was removed on the server, now make the client reflect that
                     $scope.songs.splice($scope.songs.indexOf(song), 1);
