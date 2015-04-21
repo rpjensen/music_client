@@ -13,6 +13,11 @@
 			database : 'music',
 			debug : false
 		});
+	var bodyParser = require('body-parser');
+	app.use( bodyParser.json() );       // to support JSON-encoded bodies
+	app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
+		extended: true
+	}));
 
 	app.use(express.static(__dirname));
 	http.createServer(app).listen(3000);
@@ -57,7 +62,7 @@ var executeQuery = function(query, parameters, callback) {
 	*/
 	app.get("/getBands", function(req, res) {
 		var query = "SELECT id, name, genre FROM band";
-		executeQuery(query, [], function(err, result) {
+		executeQuery(query, function(err, result) {
 			if (err) {
 				console.log(err);
 			} else {
@@ -74,6 +79,7 @@ var executeQuery = function(query, parameters, callback) {
 	*/
 	app.post("/addBand", function(req, res) {
 		var query = "INSERT INTO band SET name = ?, genre = ?";
+		console.log(req.body);
 		executeQuery(query, [req.body.name, req.body.genre], function(err, result) {
 			if (err) {
 				console.log(err);
