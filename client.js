@@ -32,7 +32,8 @@
 				"genre" : $scope.genre,
 				"instrument" : $scope.instrument
 			};
-            console.log("new artist " + newArtist); // for testing
+            console.log("New artist");
+            console.log(newArtist); // for testing
 //			$.post('/addArtist', newArtist, function(result) {
 //                // result is the new artist's id or -1 if it failed to insert
 //                if (result != -1) {
