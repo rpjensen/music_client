@@ -51,8 +51,8 @@
             console.log(newArtist); // for testing
 			$.post('/addArtist', newArtist, function(result) {
                // result is the new artist's id or -1 if it failed to insert
-               if (result != -1) {
-                   newArtist.id = result;// add the id to the object before putting it in the array
+               if (result.id != -1) {
+                   newArtist.id = result.id;// add the id to the object before putting it in the array
                    $scope.artists.push(newArtist); 
                    // This adds it to the local list (basically the client copy)
                    // clear input form now that we know they were added successfully
