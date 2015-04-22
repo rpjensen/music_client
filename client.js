@@ -17,10 +17,25 @@
         
         $scope.artists = [];// holds a list of existing artists that are backed up to the server
         //how does this work? Makes a web call, triggers a function that queries the DB for all the songs and returns the formatted result
-		var getArtists = function(){
+		$scope.getArtists = function(){
+            console.log("Get artists called");
             $.getJSON('/getArtists', function(result) {
                 // This 'should' reset the client list you have with what the database returned
-                $scope.artists = result;
+                console.log("Get artist");
+                console.log(result);
+                $scope.artists = [];
+                for (var i = 0; i < result.length; i++) {
+                    var art = {
+                        id : result[i].id,
+                        firstName : result[i].first_name,
+                        lastName : result[i].last_name,
+                        instrument : result[i].instrument,
+                        genre : result[i].genre
+                    };
+                    console.log(art);
+                    $scope.artists.push(art);
+                }
+                //$scope.artists = result;
             });
         };
 
@@ -68,7 +83,10 @@
                     // don't remove it so they can try again later
                 }
             });
-		};									 
+		};	
+
+        $scope.getArtists();	
+        console.log($scope.artists);							 
 	}]);
     
     //album controller
