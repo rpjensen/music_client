@@ -235,6 +235,39 @@ var executeQuery = function(query, parameters, callback) {
 		});
 	});
 
+	/*
+	* Remove a given artist from a given band based on existing ids
+	* Takes: {id : 'val'}
+	* Returns: ‘success’ or ‘failed’
+	*/
+	app.post("/removeArtist", function(req, res) {
+		var query = "DELETE FROM artist WHERE id = ?";
+		var body = req.body;
+		executeQuery(query, [body.id], function(err, result) {
+			var affected = result.affectedRows;
+			if (err) {
+				console.log(err);
+			} else {
+				console.log(result);
+			}
+			query = "DELETE FROM artist_for_band WHERE artist_id = ?";
+			executeQuery(query, [body.id], function(err, result) {
+				if (err) {
+					console.log(err);
+				} else {
+					console.log(result);
+					if (affected) {
+						res.json('success');
+					}
+					else {
+						res.json('failed');
+					}
+				}
+			});
+			
+		});
+	});
+
 // ---------- Albums ----------
 
 	/*
