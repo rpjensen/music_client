@@ -28,6 +28,7 @@
                     console.log(art);
                     $scope.artists.push(art);
                 }
+                $scope.$apply();
                 //$scope.artists = result;
             });
         };
@@ -55,6 +56,7 @@
                    $scope.lastName = '';
                    $scope.genre = '';
                    $scope.instrument = '';
+                   $scope.$apply();
                }
                else {
                    // some sort of 'error saving artist' message or whatever
