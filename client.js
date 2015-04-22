@@ -34,25 +34,25 @@
 			};
             console.log("New artist");
             console.log(newArtist); // for testing
-//			$.post('/addArtist', newArtist, function(result) {
-//                // result is the new artist's id or -1 if it failed to insert
-//                if (result != -1) {
-//                    newArtist.id = result;// add the id to the object before putting it in the array
-//                    $scope.artists.push(newArtist); 
-//                    // This adds it to the local list (basically the client copy)
-//                    // clear input form now that we know they were added successfully
-//                    // this is a repeat from above. why is that a thing?
-//                    // if you got values from these variables this should clear the form
-//                    $scope.firstName = '';
-//                    $scope.lastName = '';
-//                    $scope.genre = '';
-//                    $scope.instrument = '';
-//                }
-//                else {
-//                    // some sort of 'error saving artist' message or whatever
-//                    // Don't clear the field so they can attempt to add the data again when the connection is better or something
-//                }
-//            });
+			$.post('/addArtist', newArtist, function(result) {
+               // result is the new artist's id or -1 if it failed to insert
+               if (result != -1) {
+                   newArtist.id = result;// add the id to the object before putting it in the array
+                   $scope.artists.push(newArtist); 
+                   // This adds it to the local list (basically the client copy)
+                   // clear input form now that we know they were added successfully
+                   // this is a repeat from above. why is that a thing?
+                   // if you got values from these variables this should clear the form
+                   $scope.firstName = '';
+                   $scope.lastName = '';
+                   $scope.genre = '';
+                   $scope.instrument = '';
+               }
+               else {
+                   // some sort of 'error saving artist' message or whatever
+                   // Don't clear the field so they can attempt to add the data again when the connection is better or something
+               }
+           });
 		};
 		
         //deletes an artist from the db?
