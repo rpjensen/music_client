@@ -22,16 +22,9 @@
             $.getJSON('/getArtists', function(result) {
                 // This 'should' reset the client list you have with what the database returned
                 console.log("Get artist");
-                console.log(result);
                 $scope.artists = [];
                 for (var i = 0; i < result.length; i++) {
-                    var art = {
-                        id : result[i].id,
-                        firstName : result[i].first_name,
-                        lastName : result[i].last_name,
-                        instrument : result[i].instrument,
-                        genre : result[i].genre
-                    };
+                    var art = $scope.convertFromServer(result[i]);
                     console.log(art);
                     $scope.artists.push(art);
                 }
@@ -51,9 +44,9 @@
             console.log(newArtist); // for testing
 			$.post('/addArtist', newArtist, function(result) {
                // result is the new artist's id or -1 if it failed to insert
-               if (result != -1) {
-                   newArtist.id = result;// add the id to the object before putting it in the array
-                   $scope.artists.push(newArtist); 
+               if (result.id != -1) {
+                   newArtist.id = result.id;// add the id to the object before putting it in the array
+                   $scope.artists.push($scope.convertFromServer(newArtist)); 
                    // This adds it to the local list (basically the client copy)
                    // clear input form now that we know they were added successfully
                    // this is a repeat from above. why is that a thing?
@@ -84,6 +77,17 @@
                 }
             });
 		};	
+
+        $scope.convertFromServer = function(artist) {
+            var art = {
+                id : artist.id,
+                firstName : artist.first_name,
+                lastName : artist.last_name,
+                instrument : artist.instrument,
+                genre : artist.genre
+            };
+            return art;
+        };
 
         $scope.getArtists();	
         console.log($scope.artists);							 
