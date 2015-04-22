@@ -17,11 +17,12 @@
         
         $scope.artists = [];// holds a list of existing artists that are backed up to the server
         //how does this work? Makes a web call, triggers a function that queries the DB for all the songs and returns the formatted result
-<<<<<<< Updated upstream
-		$.getJSON('/getArtists', function(result) {
-            // This 'should' reset the client list you have with what the database returned
-			$scope.artists = result;
-		});
+		var getArtists = function(){
+            $.getJSON('/getArtists', function(result) {
+                // This 'should' reset the client list you have with what the database returned
+                $scope.artists = result;
+            });
+        };
 
 		$scope.addArtist = function() {
             // The field names need to match the serverside api
@@ -30,23 +31,6 @@
                 "last_name" : $scope.lastName,
 				"genre" : $scope.genre,
 				"instrument" : $scope.instrument
-=======
-		var getArtists = function(){
-            $.getJSON('/getArtists', function(result) { //encapsulate in a function***
-                // Result returns [ {artistId : ‘val’, first-name : ‘val’, last-name : ‘val’, instrument : ‘val’, genre : ‘val’}, {...}, … ]
-                // This 'should' reset the client list you have with what the database returned
-                $scope.artists = result;
-            });    
-        }
-        
-		$scope.addArtist = function() {
-            // The field names need to match the serverside api
-			var newArtist = {
-				"first-name" : $scope.firstName,
-                "last-name" : $scope.lastName,
-				"instrument" : $scope.instrument,
-                "genre" : $scope.genre
->>>>>>> Stashed changes
 			};
             console.log("new artist " + newArtist); // for testing
 //			$.post('/addArtist', newArtist, function(result) {
@@ -68,7 +52,6 @@
 //                    // Don't clear the field so they can attempt to add the data again when the connection is better or something
 //                }
 //            });
-
 		};
 		
         //deletes an artist from the db?
@@ -133,8 +116,6 @@
                     // Don't clear the field so they can attempt to add the data again when the connection is better or something
                 }
             });
-            
-           
         };
         
         $scope.remove = function(album) {
@@ -153,7 +134,6 @@
     
     app.controller('SongController', ['$scope', function($scope){
         $scope.name = '';
-
         $scope.songs = [];
         
         $getJSON('getSongs', function(result) {
@@ -182,8 +162,6 @@
                     // Don't clear the field so they can attempt to add the data again when the connection is better or something
                 }
             });
-            
-            
         };
         
         $scope.remove = function(song) {
@@ -199,5 +177,4 @@
             });
         };
     }]);
-    
 }());
