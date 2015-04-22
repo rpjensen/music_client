@@ -26,7 +26,7 @@
     -->
                     <input type="text" ng-model="instrument" placeholder="Instrument"><br>
                     <input type="text" ng-model="genre" placeholder="Genre">
-                    <button ng-disabled="!(lastName.length && firstName.length && genre.length && instrument.length)" ng-click="addArtist()">Add</button>
+                    <button ng-disabled="!(lastName.length && firstName.length)" ng-click="addArtist()">Add</button>
                 </div>
             </form>
 <!--
@@ -48,9 +48,8 @@
                 <input type="date" ng-model="event_date"> 
                 <input type="textbox" ng-model="description">
             </div>
--->         <div height="50px">
-            </div>
-            <button ng-click="getArtists()">Get Artists</button>
+-->         
+           <!-- <button ng-click="getArtists()">Get Artists</button>-->
             <table>
                 <tr ng-repeat="m in artists">
                     <td>{{m.firstName}}</td>

@@ -151,7 +151,7 @@ var executeQuery = function(query, parameters, callback) {
 	/*
 	* Insert a new artist into the database and get its
 	* Takes: {first_name : ‘val’, last_name : ‘val’, instrument : ‘val’, genre : ‘val’}
-	* Returns : id (-1 for fail)
+	* Returns : {"id" : id} (-1 for fail)
 	*/
 	app.post("/addArtist", function(req, res) {
 		var query = "INSERT INTO artist SET first_name = ?, last_name = ?, instrument = ?, genre = ?";
