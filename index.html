@@ -8,16 +8,18 @@
         <div class="header"><img src="header.jpeg"></div>
         <div class="content">
             <div ng-controller="ArtistController" class="artist">
-                <p>Press 'All' for a complete list of the musicians in our database.</p>
                 <h2>Artist</h2>
                 <p>Enter the information for an artist and press Add to add them to the artist database.</p>
+                
                 <input type="text" ng-model="firstName" placeholder="First Name">
-                <input type="text" ng-model="lastName" placeholder="Last Name"><br>
+                <input type="text" ng-model="lastName" placeholder="Last Name">
                 <input type="text" ng-model="instrument" placeholder="Instrument">
                 <input type="text" ng-model="genre" placeholder="Genre">
-                <button class="button-add" ng-disabled="!(lastName.length && firstName.length)" ng-click="addArtist()">+</button>
-                <button class="button-all" ng-click="showArtists = ! showArtists">all</button>
-                <div class="results" ng-show="showArtists">
+                <button class="button-add" ng-click="addArtist()">+</button>
+                <br><br>
+                
+                <button class="button-all" ng-click="viewHide = ! viewHide">View all artists</button>
+                <div class="results" ng-show="viewHide">
                     <table>
                         <tr ng-repeat="m in artists">
                             <td>{{m.firstName}}</td>

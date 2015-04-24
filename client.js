@@ -9,7 +9,8 @@
 
     //artist controller
     app.controller('ArtistController', ['$scope', function($scope) {
-		// Holds the temporary add artist input values
+        
+        // Holds the temporary add artist input values
         $scope.firstName = '';
         $scope.lastName = '';
         $scope.genre = '';
