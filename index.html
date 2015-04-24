@@ -15,7 +15,7 @@
                 <input type="text" ng-model="lastName" placeholder="Last Name">
                 <input type="text" ng-model="instrument" placeholder="Instrument">
                 <input type="text" ng-model="genre" placeholder="Genre">
-                <button class="button-add" ng-click="addArtist()">+</button>
+                <button class="button-add" ng-click="addArtist()" ng-disabled="!(firstName.length || lastName.length || instrument.length || genre.length)">+</button>
                 <br><br>
                 
                 <button class="button-all" ng-click="viewHide = ! viewHide">View all artists</button>
@@ -35,6 +35,7 @@
             <div ng-controller="AlbumController" class="artist">
                 <h2>Album</h2>
                 <input type="text" ng-model="album" placeholder="Album">
+                <button class="button-add" ng-click="addAlbum()" ng-disabled="!album.length">+</button>
                 <p>Release Date</p>
                 <input type="month" ng-model="release_date">
                 <form id       =  "uploadForm"
@@ -44,7 +45,7 @@
                 >
                 <input type="file" name="userPhoto" />
                 <input type="submit" value="Upload Image" name="submit">
-                    <div class="pic"></div>
+                <div class="pic"></div>
                 </form>
 
                 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
@@ -68,6 +69,7 @@
                 <h2>Song</h2>
                 <input type="text" ng-model="song_name" placeholder="Name of song">
                 <input type="text" ng-model="album" placeholder="Album">
+                <button class="button-add" ng-click="addSong()" ng-disabled="!album.length">+</button>
             </div>
             
         </div>
