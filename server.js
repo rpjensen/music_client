@@ -3,8 +3,11 @@
 	
 	var express = require('express'),
 		http = require('http'),
+        multer=require('multer'),
 		app = express(),
 		mysql = require('mysql'),
+        done =false,
+        message,
 		pool = mysql.createPool({
 			connectionLimit : 100,
 			host : 'localhost',
@@ -22,6 +25,24 @@
 
 	app.use(express.static(__dirname));
 	http.createServer(app).listen(3000);
+    
+    //Configure multer
+    app.use('/uploads', express.static(__dirname + '/uploads'));
+
+    app.use(multer({ dest: './uploads/',
+     rename: function (fieldname, filename) {
+        return filename+Date.now();
+      },
+    onFileUploadStart: function (file) {
+      console.log(file.originalname + ' is starting ...');
+    },
+    onFileUploadComplete: function (file) {
+      console.log(file.fieldname + ' uploaded to  ' + file.path);
+      message += "<p><img src=\"" + file.path + "\"> </p>";
+      done=true;
+    }
+    }));
+
 
 // ================= Database Utilities =================
 
@@ -365,6 +386,45 @@ var executeQuery = function(query, parameters, callback) {
 			}
 		});
 	});
+    
+//----------- Pictures ----------------
+    
+    /*
+    Not sure how to incorporate this...........
+    Gets a file from user
+    Takes: nothing
+    Returns: file
+    */
+    app.get('/',function(req,res){
+        res.sendFile(__dirname + "/index.html");
+    });
+    
+    /*
+        Upload file
+        Takes: nothing
+        Returns: { 
+          userPhoto:
+          { 
+             fieldname: 'userPhoto',
+             originalname: 'banner.png',
+             name: 'banner1415699779303.png',
+             encoding: '7bit',
+             mimetype: 'image/png',
+             path: 'uploads\\banner1415699779303.png',
+             extension: 'png',
+             size: 11800,
+             truncated: false,
+             buffer: null 
+         } 
+        }
+    */
+    app.post('/api/photo',function(req,res){
+      if(done==true){
+        console.log(req.files);
+        res.end(message);
+      }
+    });
+
 
 // ---------- Songs ----------
 
