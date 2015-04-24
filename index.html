@@ -13,9 +13,9 @@
     <!--            <button ng-click>View</button>-->
                 <div class="artist">
                     <h2>Artist</h2>
-                    <p>Enter the information for an artist and press Submit to add them to the artist database.</p>
+                    <p>Enter the information for an artist and press Add to add them to the artist database.</p>
                     <input type="text" ng-model="firstName" placeholder="First Name">
-                    <input type="text" ng-model="lastName" placeholder="Last Name">
+                    <input type="text" ng-model="lastName" placeholder="Last Name"><br>
     <!--
                     <p>Instrument</p>
                     <input type="checkbox" ng-model="guitar">Guitar<br>
@@ -24,9 +24,9 @@
                     <input type="checkbox" ng-model="Tambourine">Tambourine<br>
                     <input type="checkbox" ng-model="other">Other
     -->
-                    <input type="text" ng-model="instrument" placeholder="Instrument"><br>
+                    <input type="text" ng-model="instrument" placeholder="Instrument">
                     <input type="text" ng-model="genre" placeholder="Genre">
-                    <button ng-disabled="!(lastName.length && firstName.length)" ng-click="addArtist()">Add</button>
+                    <button class="button-add" ng-disabled="!(lastName.length && firstName.length)" ng-click="addArtist()">+</button>
                 </div>
             </form>
 <!--
@@ -56,7 +56,7 @@
                     <td>{{m.lastName}}</td>
                     <td>{{m.instrument}}</td>
                     <td>{{m.genre}}</td>
-                   <td><button ng-click="remove(m)">Remove</button></td>
+                   <td><button class="button-remove" ng-click="remove(m)">-</button></td>
 <!--                    <td><button ng-click="$parent.remove(m)">Remove</button></td>-->
                 </tr>
             </table>
