@@ -7,7 +7,7 @@
     <body>
         <div class="header"><img src="header.jpeg"></div>
         <div class="content">
-        <div ng-controller="ArtistController" class="artistForm">
+        <div ng-controller="ArtistController" class="artist">
             <form novalidate>
                 <p>Press 'All' for a complete list of the musicians in our database.</p>
     <!--            <button ng-click>View</button>-->
@@ -49,17 +49,18 @@
                 <input type="textbox" ng-model="description">
             </div>
 -->         
-           <!-- <button ng-click="getArtists()">Get Artists</button>-->
-            <table>
-                <tr ng-repeat="m in artists">
-                    <td>{{m.firstName}}</td>
-                    <td>{{m.lastName}}</td>
-                    <td>{{m.instrument}}</td>
-                    <td>{{m.genre}}</td>
-                   <td><button class="button-remove" ng-click="remove(m)">-</button></td>
-<!--                    <td><button ng-click="$parent.remove(m)">Remove</button></td>-->
-                </tr>
-            </table>
+            <button class="button-all" ng-click="showArtists = ! showArtists">all</button>
+            <div class="results" ng-show="showArtists">
+                <table>
+                    <tr ng-repeat="m in artists">
+                        <td>{{m.firstName}}</td>
+                        <td>{{m.lastName}}</td>
+                        <td>{{m.instrument}}</td>
+                        <td>{{m.genre}}</td>
+                       <td><button class="button-remove" ng-click="remove(m)">-</button></td>
+                    </tr>
+                </table>
+            </div>
 <!--
         </div>
         </div>

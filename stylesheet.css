@@ -39,7 +39,7 @@ body {
 }
 
 .artist {
-    
+    height: 100%;
 }
 
 .album {
@@ -53,6 +53,29 @@ body {
 .event {
    
 }
+
+.results {
+    
+}
+
+.button-all {
+    float: right;
+    background-image: -webkit-linear-gradient(top, #bf33e0, #9028a8);
+    background-image: -moz-linear-gradient(top, #bf33e0, #9028a8);
+    background-image: -ms-linear-gradient(top, #bf33e0, #9028a8);
+    background-image: -o-linear-gradient(top, #bf33e0, #9028a8);
+    background-image: linear-gradient(to bottom, #bf33e0, #9028a8);
+    -webkit-border-radius: 28;
+    -moz-border-radius: 28;
+    border-radius: 28px;
+    border: #ffffff;
+    font-family: Arial;
+    color: #ffffff;
+    font-size: 16px;
+    padding: 5px 10px 5px 10px;
+    text-decoration: none;
+}
+
 .button-add {
     float: right;
     background-image: -webkit-linear-gradient(top, #21b14d, #189021);
@@ -89,16 +112,21 @@ body {
     text-decoration: none;
 }
 
-button:hover {
-    background: #3cb0fd;
-    background-image: -webkit-linear-gradient(top, #bababa, #868686);
-    background-image: -moz-linear-gradient(top, #bababa, #868686);
-    background-image: -ms-linear-gradient(top, #bababa, #868686);
-    background-image: -o-linear-gradient(top, #bababa, #868686);
-    background-image: linear-gradient(to bottom, #bababa, #868686);
-    text-decoration: none;   
+.button-all:hover {
+    background: #da68f5;
+    text-decoration: none;
+}
+.button-add:hover {
+    background: #4ddb79;
+    text-decoration: none;
 }
 
+.button-remove:hover {
+    background: #faa753;
+    text-decoration: none;
+}
+
+/*
 .artistForm{
     height: 2000px;   
-}
+}*/
