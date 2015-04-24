@@ -67,17 +67,21 @@
 		
         //deletes an artist from the db?
 		$scope.remove = function(artist) {
+            console.log(artist);
             // remove artist needs the id of the artist you would like to remove
 			$.post('removeArtist', {"id" : artist.id}, function(result) {
+                console.log(result);
                 if (result === "success") {
                     // it was removed on the server, now make the client reflect that change
                     $scope.artists.splice($scope.artists.indexOf(artist), 1);
+                    $scope.$apply();
                 }
                 else {
                     // some sort of 'error removing album' message or whatever
                     // don't remove it so they can try again later
                 }
             });
+            
 		};	
 
         $scope.convertFromServer = function(artist) {
