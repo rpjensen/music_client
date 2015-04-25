@@ -4,8 +4,9 @@
 }
 
 html {
-    font-family: arial;
-    background-color: #88c1c1;
+    font-family: 'Alice', serif;
+    font-size: 14px;
+    background-color: #62ddd8;
     width: 800px;
     height: 100%;
     margin-left: auto;
@@ -20,7 +21,8 @@ body {
 
 .content {
     width: 600px;
-    height: auto;
+    min-height: 400px;
+    max-height: auto;
     margin-right: auto;
     margin-left: auto;
 }
@@ -30,23 +32,47 @@ body {
 }
 
 .artist {
-    height: 100%;    
+    height: 100%;
+    width: 600px;
+    padding: 5px;
 }
 
 .album {
-    
+    height: 100%;
+    width: 600px;
+    padding: 5px;
 }
 
 .song {
-    
+    height: 100%;
+    width: 600px;
+    padding: 5px;
 }
 
 .event {
-   
+    height: 100%;
+    width: 600px;
+    padding: 5px;
 }
 
-.results {
-    
+table {
+    width: 600px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.results th {
+    font-family: 'Sacramento', cursive;
+    font-size: 25px;
+    font-weight: bold;  
+}
+
+.results tr, td {
+    text-align: center;
+    border: 2px solid white;
+}
+.results .right{
+    text-align: right;
 }
 
 .button-all {
@@ -60,9 +86,9 @@ body {
     -moz-border-radius: 28;
     border-radius: 28px;
     border: #ffffff;
-    font-family: Arial;
     color: #ffffff;
-    font-size: 16px;
+    font-family: 'Alice', serif;
+    font-size: 14px;
     padding: 5px 10px 5px 10px;
     text-decoration: none;
 }
@@ -78,9 +104,9 @@ body {
     -moz-border-radius: 28;
     border-radius: 28px;
     border: #ffffff;
-    font-family: Arial;
     color: #ffffff;
-    font-size: 16px;
+    font-family: 'Alice', serif;
+    font-size: 14px;
     padding: 5px 10px 5px 10px;
     text-decoration: none;
 }
@@ -96,9 +122,9 @@ body {
     -moz-border-radius: 28;
     border-radius: 28px;
     border: #ffffff;
-    font-family: Arial;
     color: #ffffff;
-    font-size: 16px;
+    font-family: 'Alice', serif;
+    font-size: 14px;
     padding: 5px 10px 5px 10px;
     text-decoration: none;
 }
@@ -120,4 +146,17 @@ body {
 input[type="text"] {
     height: 15px;
     padding: 5px;
+    font-family: 'Alice', serif;
+    font-size: 12px;
+}
+
+h1, h2 {
+    font-family: 'Sacramento', cursive;
+    font-size: 40px;
+    font-weight: bold;
+}
+
+p {
+    font-family: 'Alice', serif;
+    font-size: 14px;
 }
