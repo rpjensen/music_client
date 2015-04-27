@@ -11,7 +11,7 @@
 		pool = mysql.createPool({
 			connectionLimit : 100,
 			host : 'localhost',
-            socketPath : '/Applications/MAMP/tmp/mysql/mysql.sock', //comment this out before pushing 
+    //        socketPath : '/Applications/MAMP/tmp/mysql/mysql.sock', //comment this out before pushing 
 			user : 'root',
 			password : 'root',
 			database : 'music',
@@ -100,7 +100,7 @@ var executeQuery = function(query, parameters, callback) {
 	* Returns: {id : 'val'} (-1 for fail)
 	*/
 	app.post("/addBand", function(req, res) {
-		var query = "INSERT INTO band SET name = ?, genre = ?";
+		var query = "INSERT INTO band (name, genre) VALUES (?,?)";
 		console.log(req.body);
 		executeQuery(query, [req.body.name, req.body.genre], function(err, result) {
 			if (err) {
@@ -130,6 +130,27 @@ var executeQuery = function(query, parameters, callback) {
 				else {
 					res.json('failed');
 				}
+			}
+		});
+	});
+    
+    /*
+	* Remove a given band based on existing ids
+	* Takes: {band_id : ‘val’}
+	* Returns: ‘success’ or ‘failed’
+	*/
+    	app.post("/removeBand", function(req, res) {
+		var query = "DELETE FROM band WHERE id=?";
+		var body = req.body;
+		executeQuery(query, [body.id], function(err, result) {
+			var affected = result.affectedRows;
+            if (result.affectedRows) {
+					res.json('success');
+				}
+			if (err) {
+				console.log(err);
+			} else {
+				console.log(result);
 			}
 		});
 	});
