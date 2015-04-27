@@ -9,8 +9,16 @@
     <body>
         <div class="header"><img src="header.jpeg"></div>
         <div class="content">
+            <div class="topBoxes">
+<!--            need to make this more pretty or whatevs-->
+                <div class="artistBox form-toggle-button" id="band"><h1>Band</h1><p>+</p></div>
+                <div class="bandBox form-toggle-button" id="artist"><h1>Artist</h1><p>+</p></div>
+                <div class="albumBox form-toggle-button" id="album"><h1>Album</h1><p>+</p></div>
+                <div class="songBox form-toggle-button" id="song"><h1>Song</h1><p>+</p></div>
+            </div>
+    <!--
             <div class="form-button-area">
-                <div class="form-toggle-button" id="band">
+                <div class="form-toggle-button">
                     Bands
                 </div>
                 <div class="form-toggle-button" id="artist">
@@ -20,6 +28,7 @@
                     Albums
                 </div>
             </div>
+        -->
             <div ng-controller="BandController" class="band toggle-controller">
                 <h2>Bands</h2>
                 <p>Enter the information for a band and press Add to add them to the band database.</p>
