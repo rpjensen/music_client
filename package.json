@@ -9,9 +9,10 @@
   "dependencies": {
     "body-parser": "^1.12.3",
     "express": "^4.12.3",
+    "hover.css": "^2.0.2",
     "http": "0.0.0",
+    "multer": "0.1.8",
     "mysql": "^2.6.2",
-    "node-mysql": "^0.4.2",
-    "multer": "0.1.8"
+    "node-mysql": "^0.4.2"
   }
 }

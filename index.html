@@ -11,10 +11,10 @@
         <div class="content">
             <div class="topBoxes">
 <!--            need to make this more pretty or whatevs-->
-                <div class="artistBox form-toggle-button" id="band"><h1>Band</h1><p>+</p></div>
-                <div class="bandBox form-toggle-button" id="artist"><h1>Artist</h1><p>+</p></div>
-                <div class="albumBox form-toggle-button" id="album"><h1>Album</h1><p>+</p></div>
-                <div class="songBox form-toggle-button" id="song"><h1>Song</h1><p>+</p></div>
+                <div class="artistBox form-toggle-button hvr-grow" id="band"><h1>Band</h1></div>
+                <div class="bandBox form-toggle-button hvr-grow" id="artist"><h1>Artist</h1></div>
+                <div class="albumBox form-toggle-button hvr-grow" id="album"><h1>Album</h1></div>
+                <div class="songBox form-toggle-button hvr-grow" id="song"><h1>Song</h1></div>
             </div>
     <!--
             <div class="form-button-area">
@@ -31,7 +31,7 @@
         -->
             <div ng-controller="BandController" class="band toggle-controller">
                 <h2>Bands</h2>
-                <p>Enter the information for a band and press Add to add them to the band database.</p>
+                <p>Enter the information for a band and press Add to add them to the band databas.</p>
                 
                 <input type="text" ng-model="name" placeholder="Band Name">
                 <input type="text" ng-model="genre" placeholder="Genre">
@@ -118,12 +118,11 @@
                   </script>
             </div>
             
-<!--
             <div ng-controller="SongController" class="song">
                 <h2>Song</h2>
-                <input type="text" ng-model="song_name" placeholder="Name of song">
-                <input type="text" ng-model="album" placeholder="Album">
-                <button class="button-add" ng-click="addSong()" ng-disabled="!album.length">+</button>
+                <input type="text" ng-model="name" placeholder="Name of song">
+                <input type="text" ng-model="albumId" placeholder="Album">
+                <button class="button-add" ng-click="addSong()" ng-disabled="!albumId.length">+</button>
                 
                 <br><br>
                 
@@ -139,7 +138,6 @@
                     </table>
                 </div>
             </div>
--->
         </div>
         <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>

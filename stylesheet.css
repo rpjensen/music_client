@@ -32,61 +32,107 @@ body {
     height: 230px;
 }
 
-.artist {
+.band, .artist, .album, .song, .event {
     height: auto;
     padding: 5px;
-}
-
-.album {
-    height: auto;
-    padding: 5px;
-}
-
-.song {
-    height: auto%;
-    padding: 5px;
-}
-
-.event {
-    height: 100%;
-    width: 600px;
-    padding: 5px;
+    width: 635px;
+    margin-right: auto;
+    margin-left: auto;
 }
 
 .topBoxes {
-    width: 100%;
+    width: 690px;
     height: 110px;
     align-items: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/*https://github.com/IanLunn/Hover/blob/master/README.md*/
+/* Grow */
+.hvr-grow {
+    display: inline-block;
+    vertical-align: middle;
+    transform: translateZ(0);
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+    backface-visibility: hidden;
+    -moz-osx-font-smoothing: grayscale;
+    transition-duration: 0.3s;
+    transition-property: transform;
+}
+
+.hvr-grow:hover,
+.hvr-grow:focus,
+.hvr-grow:active {
+    transform: scale(1.1);
 }
 
 .form-toggle-button {
-    width: 100px;
-    height: 70px;
+    width: 110px;
+    height: 60px;
     padding: 12px;
     margin: 10px;
-/*    border: 2px solid black;*/
     float: left;
     cursor: pointer;
+    -webkit-border-radius: 10;
+    -moz-border-radius: 10;
+    border-radius: 10px;
 }
 .artistBox {
-    border: 2px solid #fc9b39;
-    background: #fc9b39;
+    background-image: -webkit-linear-gradient(top, #ffa63e, #ff8d1b);
+    background-image: -moz-linear-gradient(top, #ffa63e, #ff8d1b);
+    background-image: -ms-linear-gradient(top, #ffa63e, #ff8d1b);
+    background-image: -o-linear-gradient(top, #ffa63e, #ff8d1b);
+    background-image: linear-gradient(to bottom, #ffa63e, #ff8d1b);
+    margin-left: 17px;
+    margin-right: 17px;
 }
+.artistBox:hover {
+    background: #ffb55e;
+}
+
 .bandBox {
-    border: 2px solid #e824bb;
-    background: #e824bb;
+    background-image: -webkit-linear-gradient(top, #f052cc, #e824bb);
+    background-image: -moz-linear-gradient(top, #f052cc, #e824bb);
+    background-image: -ms-linear-gradient(top, #f052cc, #e824bb);
+    background-image: -o-linear-gradient(top, #f052cc, #e824bb);
+    background-image: linear-gradient(to bottom, #f052cc, #e824bb);
+    margin-left: 17px;
+    margin-right: 17px;
+}
+.bandBox:hover {
+    background: #ff6fde;
 }
 .albumBox {
-    border: 2px solid #3b90ce;
-    background: #3b90ce;
+    background-image: -webkit-linear-gradient(top, #42aad8, #3b90ce);
+    background-image: -moz-linear-gradient(top, #42aad8, #3b90ce);
+    background-image: -ms-linear-gradient(top, #42aad8, #3b90ce);
+    background-image: -o-linear-gradient(top, #42aad8, #3b90ce);
+    background-image: linear-gradient(to bottom, #42aad8, #3b90ce);
+    margin-left: 17px;
+    margin-right: 17px;
+}
+.albumBox:hover {
+    background: #5cc2ef;
 }
 .songBox {
-    border: 2px solid #ffd800;
-    background: #ffd800;
+    background-image: -webkit-linear-gradient(top, #ffe557, #ffd800);
+    background-image: -moz-linear-gradient(top, #ffe557, #ffd800);
+    background-image: -ms-linear-gradient(top, #ffe557, #ffd800);
+    background-image: -o-linear-gradient(top, #ffe557, #ffd800);
+    background-image: linear-gradient(to bottom, #ffe557, #ffd800);
+    margin-left: 17px;
+    margin-right: 17px;
 }
+.songBox:hover{
+    background: #ffe65d;   
+}
+
 .topBoxes h1 {
     text-align: center;
+    color: white;
 }
+
 .topBoxes p {
     text-align: right;
     font-size: 16px;
@@ -97,6 +143,7 @@ table {
     width: 600px;
     padding-top: 10px;
     padding-bottom: 10px;
+    color: #676767;
 }
 
 .results th {
@@ -147,6 +194,7 @@ table {
     font-size: 14px;
     padding: 5px 10px 5px 10px;
     text-decoration: none;
+    cursor: pointer;
 }
 
 .button-remove {
@@ -170,15 +218,18 @@ table {
 .button-all:hover {
     background: #da68f5;
     text-decoration: none;
+    cursor: pointer;
 }
 .button-add:hover {
     background: #4ddb79;
     text-decoration: none;
+    cursor: pointer;
 }
 
 .button-remove:hover {
-    background: #faa753;
+    background: #ff7474;
     text-decoration: none;
+    cursor: pointer;
 }
 
 input[type="text"] {
@@ -192,11 +243,13 @@ h1, h2 {
     font-family: 'Sacramento', cursive;
     font-size: 40px;
     font-weight: bold;
+    color: #676767;
 }
 
 p {
     font-family: 'Alice', serif;
     font-size: 14px;
+    color: #676767;
 }
 
 /*
@@ -215,9 +268,5 @@ p {
 }
 
 .selected-tab {
-    font-weight: bold;
-    border: 2px solid black;
+    transform: scale(1.2);
 }
-
-
-

@@ -280,13 +280,20 @@
     
     app.controller('SongController', ['$scope', function($scope){
         $scope.name = '';
+        $scope.albumId = '';
         $scope.songs = [];
         
-        $getJSON('getSongs', function(result) {
-            $scope.songs = result;
+        $.getJSON('getSongs', function(result) {
+            $scope.songs = [];
+            for (var i = 0; i < result.length; i++) {
+                var song = result[i];//$scope.convertFromServer(result[i]);
+                console.log(song);
+                $scope.songs.push(song);
+            }
+            $scope.$apply();
         });
         
-        $scope.add = function() {
+        $scope.addSong = function() {
             var newSong = {
                 "name" : $scope.name,
                 "album_id" : $scope.albumId
@@ -294,8 +301,8 @@
 
             $.post('addSong', newSong, function(result) {
                 // result has the id of the newly inserted song or -1 if it failed to insert
-                if (result != -1) {
-                    newSong.id = result;
+                if (result.id != -1) {
+                    newSong.id = result.id;
                     $scope.songs.push(newSong); //does this add to the db?
                     // This adds it to the local list (basically the client copy)
                     //clear input form now that we know they were added successfully
@@ -316,6 +323,7 @@
                 if (result === "success") {
                     // it was removed on the server, now make the client reflect that
                     $scope.songs.splice($scope.songs.indexOf(song), 1);
+                    $scope.apply;
                 }
                 else {
                     // some sort of 'error removing song' message or whatever

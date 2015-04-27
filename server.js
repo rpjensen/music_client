@@ -6,12 +6,12 @@
         multer=require('multer'),
 		app = express(),
 		mysql = require('mysql'),
-        done =false,
+        done = false,
         message,
 		pool = mysql.createPool({
 			connectionLimit : 100,
 			host : 'localhost',
-            socketPath : '/Applications/MA#f74b2c, #d83838);MP/tmp/mysql/mysql.sock', //comment this out before pushing 
+//            socketPath : '/Applications/MAMP/tmp/mysql/mysql.sock', //comment this out before pushing 
 			user : 'root',
 			password : 'root',
 			database : 'music',
@@ -371,7 +371,7 @@ var executeQuery = function(query, parameters, callback) {
 	* Returns: ‘success’ or ‘failed’
 	*/
 	app.post("/removeAlbum", function(req, res) {
-		var query = "DELETE FROM album WHRE id = ?";
+		var query = "DELETE FROM album WHERE id = ?";
 		executeQuery(query, [req.body.id], function(err, result) {
 			if (err) {
 				console.log(err);
@@ -434,8 +434,8 @@ var executeQuery = function(query, parameters, callback) {
 	* Returns: [{id : ‘val’, name : ‘val’, album_id : 'val'}, {...}, … ]
 	*/
 	app.get("/getSongs", function(req, res) {
-		var query = "SELECT id, album_id, name, FROM song";
-		executeQuery(query, [], function(err, result) {
+		var query = "SELECT * FROM song";
+		executeQuery(query, [], function(err, result) {//////////////////////////////////////////
 			if (err) {
 				console.log(err);
 			} else {
@@ -451,7 +451,7 @@ var executeQuery = function(query, parameters, callback) {
 	* Returns:[{id : ‘val’, name : ‘val’, album_id : 'val'}, {...}, … ]
 	*/
 	app.get("/getSongsForAlbum", function(req, res) {
-		var query = "SELECT id, album_id, name, FROM song WHERE album_id = ?";
+		var query = "SELECT id, album_id, name, FROM song WHERE album_id = ?"; //SELECT *?
 		executeQuery(query, [req.query.album_id], function(err, result) {
 			if (err) {
 				console.log(err);
@@ -469,7 +469,11 @@ var executeQuery = function(query, parameters, callback) {
 	*/
 	app.post("/addSong", function(req, res) {
 		var query = "INSERT INTO song SET name = ?, album_id = ?";
-		executeQuery(query, [req.body.name, req.query.album_id], function(err, result) {
+		executeQuery(query, [req.body.name, req.body.album_id], function(err, result) {
+            var affected = result.affectedRows;
+            if(affected){
+                res.json('success');
+            }
 			if (err) {
 				console.log(err);
 			} else {
@@ -477,6 +481,7 @@ var executeQuery = function(query, parameters, callback) {
 				res.json({"id" : result.insertId});
 			}
 		});
+        
 	});
 
 	/*
