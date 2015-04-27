@@ -118,7 +118,7 @@
                   </script>
             </div>
             
-            <div ng-controller="SongController" class="song">
+            <div ng-controller="SongController" class="song toggle-controller">
                 <h2>Song</h2>
                 <input type="text" ng-model="name" placeholder="Name of song">
                 <input type="text" ng-model="albumId" placeholder="Album">
@@ -126,7 +126,7 @@
                 
                 <br><br>
                 
-                <button class="button-all" ng-click="viewHideSongs = ! viewHideSongs">View all songs</button>
+                <button class="button-all" ng-click="toggleSongs()">{{toggleText}}</button>
                 <div class="results" ng-show="viewHideSongs">
                     <table>
                         <tr><th>Song Title</th></tr>

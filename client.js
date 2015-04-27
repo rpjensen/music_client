@@ -223,6 +223,9 @@
         $scope.album = '';
        // $scope.release_date = ''; // not messing with release_date yet
 
+        $scope.viewHideAlbums = true;
+        $scope.toggleText = "Hide Albums";
+
         $scope.albums = [];
         
         $.getJSON('getAlbums', function(result){
@@ -276,12 +279,21 @@
                 }
             });
         };
+
+        $scope.toggleAlbums = function() {
+            $scope.viewHideAlbums = ! $scope.viewHideAlbums;
+            $scope.toggleText = $scope.viewHideAlbums ? "Hide Albums" : "View Albums";
+        };
+
     }]);
     
     app.controller('SongController', ['$scope', function($scope){
         $scope.name = '';
         $scope.albumId = '';
         $scope.songs = [];
+		
+		$scope.viewHideSongs = true;
+        $scope.toggleText = "Hide Songs";
         
         $.getJSON('getSongs', function(result) {
             $scope.songs = [];
@@ -329,6 +341,11 @@
                     // some sort of 'error removing song' message or whatever
                 }
             });
+        };
+		
+		$scope.toggleSongs = function() {
+            $scope.viewHideSongs = ! $scope.viewHideSongs;
+            $scope.toggleText = $scope.viewHideSongs ? "Hide Songs" : "View Songs";
         };
     }]);
 }());
