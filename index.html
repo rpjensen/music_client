@@ -17,7 +17,7 @@
                 <input type="text" ng-model="lastName" placeholder="Last Name">
                 <input type="text" ng-model="instrument" placeholder="Instrument">
                 <input type="text" ng-model="genre" placeholder="Genre">
-                <button class="button-add" ng-click="addArtist()" ng-disabled="!(firstName.length || lastName.length || instrument.length || genre.length)">+</button>
+                <button class="button-add" ng-click="addArtist()" ng-disabled="!(firstName.length && lastName.length)">+</button>
                 <br><br>
                 
                 <button class="button-all" ng-click="viewHideArtists = ! viewHideArtists">View all artists</button>
