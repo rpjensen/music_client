@@ -4,7 +4,7 @@
 }
 
 html {
-    font-family: 'Alice', serif;
+    font-family: 'Gudea', sans-serif;
     font-size: 14px;
     background-color: #62ddd8;
     width: 800px;
@@ -115,6 +115,7 @@ body {
 .albumBox:hover {
     background: #5cc2ef;
 }
+
 .songBox {
     background-image: -webkit-linear-gradient(top, #ffe557, #ffd800);
     background-image: -moz-linear-gradient(top, #ffe557, #ffd800);
@@ -147,7 +148,6 @@ table {
 }
 
 .results th {
-    font-family: 'Sacramento', cursive;
     font-size: 25px;
     font-weight: bold;  
 }
@@ -172,7 +172,6 @@ table {
     border-radius: 28px;
     border: #ffffff;
     color: #ffffff;
-    font-family: 'Alice', serif;
     font-size: 14px;
     padding: 5px 10px 5px 10px;
     text-decoration: none;
@@ -190,7 +189,6 @@ table {
     border-radius: 28px;
     border: #ffffff;
     color: #ffffff;
-    font-family: 'Alice', serif;
     font-size: 14px;
     padding: 5px 10px 5px 10px;
     text-decoration: none;
@@ -209,7 +207,6 @@ table {
     border-radius: 28px;
     border: #ffffff;
     color: #ffffff;
-    font-family: 'Alice', serif;
     font-size: 14px;
     padding: 5px 10px 5px 10px;
     text-decoration: none;
@@ -235,19 +232,22 @@ table {
 input[type="text"] {
     height: 15px;
     padding: 5px;
-    font-family: 'Alice', serif;
-    font-size: 12px;
+    font-size: 11px;
 }
 
 h1, h2 {
-    font-family: 'Sacramento', cursive;
+    font-family: 'Berkshire Swash', cursive; /*this is the one*/
     font-size: 40px;
-    font-weight: bold;
+    color: #676767;
+}
+h2 {
+    font-family: 'Berkshire Swash', cursive; /*this is the one*/
+    font-size: 70px;
     color: #676767;
 }
 
 p {
-    font-family: 'Alice', serif;
+    font-family: 'Gudea', sans-serif;
     font-size: 14px;
     color: #676767;
 }
@@ -268,5 +268,8 @@ p {
 }
 
 .selected-tab {
-    transform: scale(1.2);
+    transform: scale(1.1);
+    -webkit-box-shadow: 0px 0px 10px 2px rgba(52, 52, 52, 0.75);
+    -moz-box-shadow: 0px 0px 10px 2px rgba(52, 52, 52, 0.75);
+    box-shadow: 0px 0px 10px 2px rgba(52, 52, 52, 0.75);
 }
