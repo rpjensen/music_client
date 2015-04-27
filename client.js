@@ -295,10 +295,10 @@
 		$scope.viewHideSongs = true;
         $scope.toggleText = "Hide Songs";
         
-        $.getJSON('getSongs', function(result) {
+        $.getJSON('/getSongs', function(result) {
             $scope.songs = [];
             for (var i = 0; i < result.length; i++) {
-                var song = result[i];//$scope.convertFromServer(result[i]);
+                var song = $scope.convertFromServer(result[i]);
                 console.log(song);
                 $scope.songs.push(song);
             }
@@ -310,17 +310,22 @@
                 "name" : $scope.name,
                 "album_id" : $scope.albumId
             };
+            console.log("Add song");
+            console.log(newSong);
 
-            $.post('addSong', newSong, function(result) {
+            $.post('/addSong', newSong, function(result) {
                 // result has the id of the newly inserted song or -1 if it failed to insert
+                console.log(result);
                 if (result.id != -1) {
                     newSong.id = result.id;
-                    $scope.songs.push(newSong); //does this add to the db?
+                    $scope.songs.push($scope.convertFromServer(newSong)); //does this add to the db?
                     // This adds it to the local list (basically the client copy)
                     //clear input form now that we know they were added successfully
                     //this is a repeat from above. why is that a thing?
                     // if you got values from these variables this should clear the form
                     $scope.name = '';
+                    $scope.albumId = '';
+                    $scope.$apply();
                 }
                 else {
                     // some sort of 'error saving song' message or whatever
@@ -331,11 +336,11 @@
         
         $scope.remove = function(song) {
             // api takes the song id and removes based on that value
-            $.post('removeSong', {"id" : song.id}, function(result) {
+            $.post('/removeSong', {"id" : song.id}, function(result) {
                 if (result === "success") {
                     // it was removed on the server, now make the client reflect that
                     $scope.songs.splice($scope.songs.indexOf(song), 1);
-                    $scope.apply;
+                    $scope.$apply();
                 }
                 else {
                     // some sort of 'error removing song' message or whatever
@@ -346,6 +351,14 @@
 		$scope.toggleSongs = function() {
             $scope.viewHideSongs = ! $scope.viewHideSongs;
             $scope.toggleText = $scope.viewHideSongs ? "Hide Songs" : "View Songs";
+        };
+
+        $scope.convertFromServer = function(newSong) {
+            var song = {};
+            song.id = newSong.id;
+            song.albumId = newSong.album_id;
+            song.name = newSong.name;
+            return song;
         };
     }]);
 }());

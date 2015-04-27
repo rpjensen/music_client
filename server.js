@@ -487,15 +487,11 @@ var executeQuery = function(query, parameters, callback) {
 	/*
 	* Add a new song for a given album id
 	* Takes: {album_id : ‘val’, name : ‘val’}
-	* Returns: {songId : 'val'}
+	* Returns: {id : 'val'}
 	*/
 	app.post("/addSong", function(req, res) {
 		var query = "INSERT INTO song SET name = ?, album_id = ?";
 		executeQuery(query, [req.body.name, req.body.album_id], function(err, result) {
-            var affected = result.affectedRows;
-            if(affected){
-                res.json('success');
-            }
 			if (err) {
 				console.log(err);
 			} else {
