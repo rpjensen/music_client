@@ -371,7 +371,7 @@ var executeQuery = function(query, parameters, callback) {
 	* Returns: ‘success’ or ‘failed’
 	*/
 	app.post("/removeAlbum", function(req, res) {
-		var query = "DELETE FROM album WHRE id = ?";
+		var query = "DELETE FROM album WHERE id = ?";
 		executeQuery(query, [req.body.id], function(err, result) {
 			if (err) {
 				console.log(err);
@@ -468,8 +468,12 @@ var executeQuery = function(query, parameters, callback) {
 	* Returns: {songId : 'val'}
 	*/
 	app.post("/addSong", function(req, res) {
-		var query = "INSERT INTO song (name , album_id) VALUES(?, ?)";
-		executeQuery(query, [req.body.name, req.query.album_id], function(err, result) {
+		var query = "INSERT INTO song SET name = ?, album_id = ?";
+		executeQuery(query, [req.body.name, req.body.album_id], function(err, result) {
+            var affected = result.affectedRows;
+            if(affected){
+                res.json('success');
+            }
 			if (err) {
 				console.log(err);
 			} else {
@@ -477,6 +481,7 @@ var executeQuery = function(query, parameters, callback) {
 				res.json({"id" : result.insertId});
 			}
 		});
+        
 	});
 
 	/*

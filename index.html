@@ -120,9 +120,9 @@
             
             <div ng-controller="SongController" class="song">
                 <h2>Song</h2>
-                <input type="text" ng-model="song_name" placeholder="Name of song">
-                <input type="text" ng-model="album" placeholder="Album">
-                <button class="button-add" ng-click="addSong()" ng-disabled="!album.length">+</button>
+                <input type="text" ng-model="name" placeholder="Name of song">
+                <input type="text" ng-model="albumId" placeholder="Album">
+                <button class="button-add" ng-click="addSong()" ng-disabled="!albumId.length">+</button>
                 
                 <br><br>
                 
@@ -133,7 +133,7 @@
                         <tr ng-repeat="s in songs">                            
                             <td>{{s.name}}</td>
                             <td>{{s.albumId}}</td>
-                           <td class="right"><button class="button-remove" ng-click="removeSong()">-</button></td>
+                           <td class="right"><button class="button-remove" ng-click="remove(s)">-</button></td>
                         </tr>
                     </table>
                 </div>
