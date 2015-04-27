@@ -219,9 +219,9 @@
     //album controller
     app.controller('AlbumController', ['$scope', function($scope) {
         // Holds the temporary add album input values
-        $scope.bandId = -1;// this should come from whatever band we are trying to add the album to
+        $scope.band_id = -1;// this should come from whatever band we are trying to add the album to
         $scope.album = '';
-       // $scope.release_date = ''; // not messing with release_date yet
+       $scope.release_date = ''; // not messing with release_date yet
 
         $scope.albums = [];
         
@@ -241,11 +241,13 @@
             // We can get bandId by making the person add albums in the context of a band (like an add button off a band row)
             // Might even be something like $scope.band.id if we have a reference to a band object instead of just its id
             var newAlbum = {
-                "id" : $scope.bandId,
+                "id" : $scope.band_id,
                 "name" : $scope.album,
+                "release_date" : $scope.release_date
             };
+            console.log(newAlbum);
             // "release_date" : $scope.release_date
-            $.post('addAlbum', newAlbum, function(result) {
+            $.post('/addAlbum', newAlbum, function(result) {
                 if (result != -1) {
                     newAlbum.id = result;
                     $scope.albums.push(newAlbum); //does this add to the db?
@@ -253,9 +255,10 @@
                     //clear input form now that we know they were added successfully
                     //this is a repeat from above. why is that a thing?
                     // if you got values from these variables this should clear the form
-                    $scope.bandId = '';
+                    $scope.band_id = '';
                     $scope.album = '';
-                    //$scope.release_date = '';
+                    $scope.release_date = '';
+                    $scope.apply();
                 }
                 else {
                     // some sort of 'error saving album' message or whatever
@@ -270,11 +273,17 @@
                 if (result === "success") {
                     // it was removed on the server, now make the client reflect that
                     $scope.album.splice($scope.albums.indexOf(albums), 1);
+                    $scope.apply();
                 }
                 else {
                     // some sort of 'error removing album' message or whatever
                 }
             });
+        };
+        
+         $scope.toggleAlbum = function() {
+            $scope.viewHideAlbum = ! $scope.viewHideAlbum;
+            $scope.toggleText = $scope.viewHideAlbum ? "Hide Album" : "View Album";
         };
     }]);
     
