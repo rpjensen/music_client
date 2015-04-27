@@ -130,6 +130,7 @@ body {
 
 .topBoxes h1 {
     text-align: center;
+    color: white;
 }
 
 .topBoxes p {
@@ -142,6 +143,7 @@ table {
     width: 600px;
     padding-top: 10px;
     padding-bottom: 10px;
+    color: #676767;
 }
 
 .results th {
@@ -241,11 +243,13 @@ h1, h2 {
     font-family: 'Sacramento', cursive;
     font-size: 40px;
     font-weight: bold;
+    color: #676767;
 }
 
 p {
     font-family: 'Alice', serif;
     font-size: 14px;
+    color: #676767;
 }
 
 /*
