@@ -28,7 +28,7 @@ body {
 }
 
 .header {
-    height: 300px;
+    height: 230px;
 }
 
 .artist {
@@ -53,6 +53,45 @@ body {
     height: 100%;
     width: 600px;
     padding: 5px;
+}
+
+.topBoxes {
+    width: 100%;
+    height: 110px;
+    align-items: center;
+}
+
+.artistBox, .bandBox, .songBox, .albumBox {
+    width: 100px;
+    height: 70px;
+    padding: 12px;
+    margin: 10px;
+/*    border: 2px solid black;*/
+    float: left;
+}
+.artistBox {
+    border: 2px solid #fc9b39;
+    background: #fc9b39;
+}
+.bandBox {
+    border: 2px solid #e824bb;
+    background: #e824bb;
+}
+.albumBox {
+    border: 2px solid #3b90ce;
+    background: #3b90ce;
+}
+.songBox {
+    border: 2px solid #ffd800;
+    background: #ffd800;
+}
+.topBoxes h1 {
+    text-align: center;
+}
+.topBoxes p {
+    text-align: right;
+    font-size: 16px;
+    font-weight: bold;
 }
 
 table {
@@ -113,11 +152,11 @@ table {
 
 .button-remove {
     float: right;
-    background-image: -webkit-linear-gradient(top, #f7922c, #d88838);
-    background-image: -moz-linear-gradient(top, #f7922c, #d88838);
-    background-image: -ms-linear-gradient(top, #f7922c, #d88838);
-    background-image: -o-linear-gradient(top, #f7922c, #d88838);
-    background-image: linear-gradient(to bottom, #f7922c, #d88838);
+    background-image: -webkit-linear-gradient(top, #f74b2c, #d83838);
+    background-image: -moz-linear-gradient(top, #f74b2c, #d83838);
+    background-image: -ms-linear-gradient(top, #f74b2c, #d83838);
+    background-image: -o-linear-gradient(top, #f74b2c, #d83838);
+    background-image: linear-gradient(to bottom, #f74b2c, #d83838);
     -webkit-border-radius: 28;
     -moz-border-radius: 28;
     border-radius: 28px;
