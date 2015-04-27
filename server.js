@@ -134,6 +134,28 @@ var executeQuery = function(query, parameters, callback) {
 		});
 	});
 
+	/*
+	* Remove an existing band by id. 
+	* Takes: {id : ‘val’} 
+	* Returns: ‘success’ or ‘failed’
+	*/
+	app.post("/removeBand", function(req, res) {
+		var query = "DELETE FROM band WHERE id = ?";
+		executeQuery(query, [req.body.id], function(err, result) {
+			if (err) {
+				console.log(err);
+			} else {
+				console.log(result);
+				if (result.affectedRows) {
+					res.json('success');
+				}
+				else {
+					res.json('failed');
+				}
+			}
+		});
+	});
+
 // ---------- Artists ----------
 
 	/*
