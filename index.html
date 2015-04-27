@@ -118,7 +118,6 @@
                   </script>
             </div>
             
-<!--
             <div ng-controller="SongController" class="song">
                 <h2>Song</h2>
                 <input type="text" ng-model="song_name" placeholder="Name of song">
@@ -134,12 +133,11 @@
                         <tr ng-repeat="s in songs">                            
                             <td>{{s.name}}</td>
                             <td>{{s.albumId}}</td>
-                           <td class="right"><button class="button-remove" ng-click="remove(s)">-</button></td>
+                           <td class="right"><button class="button-remove" ng-click="removeSong()">-</button></td>
                         </tr>
                     </table>
                 </div>
             </div>
--->
         </div>
         <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>

@@ -280,10 +280,16 @@
     
     app.controller('SongController', ['$scope', function($scope){
         $scope.name = '';
-        $scope.songs = [];
         
-        $getJSON('getSongs', function(result) {
-            $scope.songs = result;
+        
+        $.getJSON('getSongs', function(result) {
+            $scope.songs = [];
+            for (var i = 0; i < result.length; i++) {
+                var song = result[i];//$scope.convertFromServer(result[i]);
+                console.log(song);
+                $scope.songs.push(song);
+            }
+            $scope.$apply();
         });
         
         $scope.add = function() {
@@ -295,7 +301,7 @@
             $.post('addSong', newSong, function(result) {
                 // result has the id of the newly inserted song or -1 if it failed to insert
                 if (result != -1) {
-                    newSong.id = result;
+                    newSong.id = result.id;
                     $scope.songs.push(newSong); //does this add to the db?
                     // This adds it to the local list (basically the client copy)
                     //clear input form now that we know they were added successfully

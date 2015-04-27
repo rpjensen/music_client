@@ -6,12 +6,12 @@
         multer=require('multer'),
 		app = express(),
 		mysql = require('mysql'),
-        done =false,
+        done = false,
         message,
 		pool = mysql.createPool({
 			connectionLimit : 100,
 			host : 'localhost',
-            socketPath : '/Applications/MAMP/tmp/mysql/mysql.sock', //comment this out before pushing 
+//            socketPath : '/Applications/MAMP/tmp/mysql/mysql.sock', //comment this out before pushing 
 			user : 'root',
 			password : 'root',
 			database : 'music',
@@ -434,8 +434,8 @@ var executeQuery = function(query, parameters, callback) {
 	* Returns: [{id : ‘val’, name : ‘val’, album_id : 'val'}, {...}, … ]
 	*/
 	app.get("/getSongs", function(req, res) {
-		var query = "SELECT id, album_id, name, FROM song";
-		executeQuery(query, [], function(err, result) {
+		var query = "SELECT * FROM song";
+		executeQuery(query, [], function(err, result) {//////////////////////////////////////////
 			if (err) {
 				console.log(err);
 			} else {
@@ -451,7 +451,7 @@ var executeQuery = function(query, parameters, callback) {
 	* Returns:[{id : ‘val’, name : ‘val’, album_id : 'val'}, {...}, … ]
 	*/
 	app.get("/getSongsForAlbum", function(req, res) {
-		var query = "SELECT id, album_id, name, FROM song WHERE album_id = ?";
+		var query = "SELECT id, album_id, name, FROM song WHERE album_id = ?"; //SELECT *?
 		executeQuery(query, [req.query.album_id], function(err, result) {
 			if (err) {
 				console.log(err);
@@ -468,7 +468,7 @@ var executeQuery = function(query, parameters, callback) {
 	* Returns: {songId : 'val'}
 	*/
 	app.post("/addSong", function(req, res) {
-		var query = "INSERT INTO song SET name = ?, album_id = ?";
+		var query = "INSERT INTO song (name , album_id) VALUES(?, ?)";
 		executeQuery(query, [req.body.name, req.query.album_id], function(err, result) {
 			if (err) {
 				console.log(err);
