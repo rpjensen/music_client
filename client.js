@@ -1,4 +1,21 @@
 (function() {
+    "use strict";
+    // JQuery Stuff
+    var main = function() {
+        $('.toggle-controller').hide();
+        $('.band').show();
+        $('#band').addClass('selected-tab');
+        $('.form-toggle-button').on('click', function(event) {
+            $('.form-toggle-button').removeClass('selected-tab');
+            $(this).addClass('selected-tab');
+            $('.toggle-controller').hide();
+            $('.' + this.id).show();
+        });
+    };
+
+    $(document).ready(main);
+
+
     //'music' is the name of the module to create or retrieve
     //[] if specified then new module is being created. If unspecified then the module is being retrieved for further configuration. (optional)
     //returns new module with the angular.Module api
@@ -6,6 +23,98 @@
     
     //https://docs.angularjs.org/guide/scope
     //https://docs.angularjs.org/guide/controller
+
+    // Band controller
+    app.controller('BandController', ['$scope', function($scope) {
+        
+        // Holds the temporary add artist input values
+        $scope.name = '';
+        $scope.genre = '';
+        $scope.viewHideBands = true;
+        $scope.toggleText = "Hide Bands";
+        
+        $scope.bands = [];// holds a list of existing bands that are backed up to the server
+        //how does this work? Makes a web call, triggers a function that queries the DB for all the songs and returns the formatted result
+        $scope.getBands = function(){
+            console.log("Get bands called");
+            $.getJSON('/getBands', function(result) {
+                // This 'should' reset the client list you have with what the database returned
+                console.log("Get Bands");
+                $scope.bands = [];
+                for (var i = 0; i < result.length; i++) {
+                    var band = $scope.convertFromServer(result[i]);
+                    console.log(band);
+                    $scope.bands.push(band);
+                }
+                $scope.$apply();
+                //$scope.artists = result;
+            });
+        };
+
+        $scope.addBand = function() {
+            // The field names need to match the serverside api
+            var newBand = {
+                "name" : $scope.name,
+                "genre" : $scope.genre
+            };
+            console.log("New Band");
+            console.log(newBand); // for testing
+            $.post('/addBand', newBand, function(result) {
+               // result is the new artist's id or -1 if it failed to insert
+               if (result.id != -1) {
+                   newBand.id = result.id;// add the id to the object before putting it in the array
+                   $scope.bands.push($scope.convertFromServer(newBand)); 
+                   // This adds it to the local list (basically the client copy)
+                   // clear input form now that we know they were added successfully
+                   // this is a repeat from above. why is that a thing?
+                   // if you got values from these variables this should clear the form
+                   $scope.name = '';
+                   $scope.genre = '';
+                   $scope.$apply();
+               }
+               else {
+                   // some sort of 'error saving artist' message or whatever
+                   // Don't clear the field so they can attempt to add the data again when the connection is better or something
+               }
+           });
+        };
+        
+        //deletes an artist from the db?
+        $scope.remove = function(band) {
+            console.log(band);
+            // remove band needs the id of the band you would like to remove
+            $.post('removeBand', {"id" : band.id}, function(result) {
+                console.log(result);
+                if (result === "success") {
+                    // it was removed on the server, now make the client reflect that change
+                    $scope.bands.splice($scope.bands.indexOf(band), 1);
+                    $scope.$apply();
+                }
+                else {
+                    // some sort of 'error removing album' message or whatever
+                    // don't remove it so they can try again later
+                }
+            });
+            
+        };  
+
+         $scope.toggleBands = function() {
+            $scope.viewHideBands = ! $scope.viewHideBands;
+            $scope.toggleText = $scope.viewHideBands ? "Hide Bands" : "View Bands";
+        };
+
+        $scope.convertFromServer = function(band) {
+            var band = {
+                id : band.id,
+                name : band.name,
+                genre : band.genre
+            };
+            return band;
+        };
+
+        $scope.getBands();    
+        console.log($scope.bands);                             
+    }]);
 
     //artist controller
     app.controller('ArtistController', ['$scope', function($scope) {
@@ -15,6 +124,8 @@
         $scope.lastName = '';
         $scope.genre = '';
         $scope.instrument = '';
+        $scope.viewHideArtists = true;
+        $scope.toggleText = "Hide Artists";
         
         $scope.artists = [];// holds a list of existing artists that are backed up to the server
         //how does this work? Makes a web call, triggers a function that queries the DB for all the songs and returns the formatted result
@@ -85,6 +196,11 @@
             
 		};	
 
+        $scope.toggleArtists = function() {
+            $scope.viewHideArtists = ! $scope.viewHideArtists;
+            $scope.toggleText = $scope.viewHideArtists ? "Hide Artists" : "View Artists";
+        };
+
         $scope.convertFromServer = function(artist) {
             var art = {
                 id : artist.id,
@@ -120,7 +236,7 @@
             $scope.albums = result;
         });
         
-        $scope.add = function() {
+        $scope.addAlbum = function() {
             // Kate: needs band id and the api field for album name is just 'name' (right now I haven't done anything with release date since its harder to display nicely)
             // We can get bandId by making the person add albums in the context of a band (like an add button off a band row)
             // Might even be something like $scope.band.id if we have a reference to a band object instead of just its id

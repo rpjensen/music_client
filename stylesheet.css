@@ -20,9 +20,10 @@ body {
 }
 
 .content {
-    width: 600px;
+    width: 90%;
+    max-width: 1000px;
     min-height: 400px;
-    max-height: auto;
+    height: auto;
     margin-right: auto;
     margin-left: auto;
 }
@@ -32,20 +33,17 @@ body {
 }
 
 .artist {
-    height: 100%;
-    width: 600px;
+    height: auto;
     padding: 5px;
 }
 
 .album {
-    height: 100%;
-    width: 600px;
+    height: auto;
     padding: 5px;
 }
 
 .song {
-    height: 100%;
-    width: 600px;
+    height: auto%;
     padding: 5px;
 }
 
@@ -160,3 +158,23 @@ p {
     font-family: 'Alice', serif;
     font-size: 14px;
 }
+
+.form-toggle-button {
+    display: inline-block;
+    text-align: center;
+    height: 20px;
+    padding: 5px 15px;
+    background-color: #62ddd8;
+    cursor: pointer;
+}
+
+.form-button-area {
+    margin: 25px auto;
+}
+
+.selected-tab {
+    font-weight: bold;
+}
+
+
+

@@ -9,7 +9,43 @@
     <body>
         <div class="header"><img src="header.jpeg"></div>
         <div class="content">
-            <div ng-controller="ArtistController" class="artist">
+            <div class="form-button-area">
+                <div class="form-toggle-button" id="band">
+                    Bands
+                </div>
+                <div class="form-toggle-button" id="artist">
+                    Artists
+                </div>
+                <div class="form-toggle-button" id="album">
+                    Albums
+                </div>
+            </div>
+            <div ng-controller="BandController" class="band toggle-controller">
+                <h2>Bands</h2>
+                <p>Enter the information for a band and press Add to add them to the band database.</p>
+                
+                <input type="text" ng-model="name" placeholder="Band Name">
+                <input type="text" ng-model="genre" placeholder="Genre">
+                <button class="button-add" ng-click="addBand()" ng-disabled="!(name.length)">+</button>
+                <br><br>
+                {{name}} {{genre}}
+                
+                <button class="button-all" ng-click="toggleBands()">{{toggleText}}</button>
+                <div class="results" ng-show="viewHideBands">
+                    <table>
+                        <tr>
+                            <th>Band Name</th>
+                            <th>Genre</th>
+                        </tr>
+                        <tr ng-repeat="b in bands">
+                            <td>{{b.name}}</td>
+                            <td>{{b.genre}}</td>
+                           <td class="right"><button class="button-remove" ng-click="remove(b)">-</button></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div ng-controller="ArtistController" class="artist toggle-controller">
                 <h2>Artist</h2>
                 <p>Enter the information for an artist and press Add to add them to the artist database.</p>
                 
@@ -20,7 +56,7 @@
                 <button class="button-add" ng-click="addArtist()" ng-disabled="!(firstName.length && lastName.length)">+</button>
                 <br><br>
                 
-                <button class="button-all" ng-click="viewHideArtists = ! viewHideArtists">View all artists</button>
+                <button class="button-all" ng-click="toggleArtists()">{{toggleText}}</button>
                 <div class="results" ng-show="viewHideArtists">
                     <table>
                         <tr>
@@ -40,7 +76,7 @@
                 </div>
             </div>
             
-            <div ng-controller="AlbumController" class="album">
+            <div ng-controller="AlbumController" class="album toggle-controller">
                 <h2>Album</h2>
                 <input type="text" ng-model="album" placeholder="Album">
                 <button class="button-add" ng-click="addAlbum()" ng-disabled="!album.length">+</button>
