@@ -7,7 +7,6 @@
 		app = express(),
 		mysql = require('mysql'),
         done = false,
-        message,
 		pool = mysql.createPool({
 			connectionLimit : 100,
 			host : 'localhost',
@@ -30,6 +29,8 @@
     app.use('/uploads', express.static(__dirname + '/uploads'));
 
     app.use(multer({ dest: './uploads/',
+     putSingleFilesInArray:true,
+     //inMemory: true,
      rename: function (fieldname, filename) {
         return filename+Date.now();
       },
@@ -38,7 +39,6 @@
     },
     onFileUploadComplete: function (file) {
       console.log(file.fieldname + ' uploaded to  ' + file.path);
-      message += "<p><img src=\"" + file.path + "\"> </p>";
       done=true;
     }
     }));
@@ -443,6 +443,7 @@ var executeQuery = function(query, parameters, callback) {
     app.post('/api/photo',function(req,res){
       if(done==true){
         console.log(req.files);
+          
       }
     });
 

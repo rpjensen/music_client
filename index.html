@@ -97,7 +97,7 @@
                      method    =  "post"
                 >
                 <input type="file" name="userPhoto" onchange="readURL(this);"/>
-                <input type="submit" value="Upload" name="submit">        
+                <input type="submit" value="Upload" name="submit" onchange="$('#uploadForm').reset();"/>        
                 <img id="stuff" src="#" />
                 </form>
                 <div class="pic"></div>
@@ -144,5 +144,6 @@
             reader.readAsDataURL(input.files[0]);
         }
     }
+        
     </script>
 </html>
