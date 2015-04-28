@@ -226,8 +226,6 @@
         $scope.albums = [];
         
         $.getJSON('getAlbums', function(result){
-            // Kate: The result is an array of ALL existing albums [{albumId : 'val', bandId : ‘val’, name : ‘val’}, {...}, ...}]
-            // Use /getAlbumForBand if you want the albums for a particular band
            /*
             * Get an array of all albums
             * Takes: nothing
@@ -237,9 +235,6 @@
         });
         
         $scope.addAlbum = function() {
-            // Kate: needs band id and the api field for album name is just 'name' (right now I haven't done anything with release date since its harder to display nicely)
-            // We can get bandId by making the person add albums in the context of a band (like an add button off a band row)
-            // Might even be something like $scope.band.id if we have a reference to a band object instead of just its id
             var newAlbum = {
                 "id" : $scope.band_id,
                 "name" : $scope.album,
@@ -250,11 +245,7 @@
             $.post('/addAlbum', newAlbum, function(result) {
                 if (result != -1) {
                     newAlbum.id = result;
-                    $scope.albums.push(newAlbum); //does this add to the db?
-                    // This adds it to the local list (basically the client copy)
-                    //clear input form now that we know they were added successfully
-                    //this is a repeat from above. why is that a thing?
-                    // if you got values from these variables this should clear the form
+                    $scope.albums.push(newAlbum); 
                     $scope.band_id = '';
                     $scope.album = '';
                     $scope.release_date = '';
@@ -308,8 +299,6 @@
                     $scope.songs.push(newSong); //does this add to the db?
                     // This adds it to the local list (basically the client copy)
                     //clear input form now that we know they were added successfully
-                    //this is a repeat from above. why is that a thing?
-                    // if you got values from these variables this should clear the form
                     $scope.name = '';
                 }
                 else {
