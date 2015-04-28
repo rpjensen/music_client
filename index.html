@@ -87,9 +87,9 @@
             
             <div ng-controller="AlbumController" class="album toggle-controller">
                 <h2>Album</h2>
-                <input type="text" ng-model="album" placeholder="Album">
+                <input type="text" ng-model="name" placeholder="Album">
                 <input type="month" ng-model="release_date">
-                <button class="button-add" ng-click="addAlbum()" ng-disabled="!album.length">+</button>
+                <button class="button-add" ng-click="addAlbum()" ng-disabled="!name.length">+</button>
                 <p>Release Date</p>
                 <button class="button-all" ng-click="toggleAlbum()">{{toggleText}}</button>
                 <div class="results" ng-show="viewHideAlbum">
@@ -99,6 +99,7 @@
                             <th>Release Date</th>
                         </tr>
                         <tr ng-repeat="i in album">
+                            <td>{{i.id}}</td>
                             <td>{{i.name}}</td>
                             <td>{{i.release_date}}</td>
                            <td class="right"><button class="button-remove" ng-click="remove(i)">-</button></td>

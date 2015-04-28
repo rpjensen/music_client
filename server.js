@@ -375,8 +375,14 @@ var executeQuery = function(query, parameters, callback) {
 	* Returns {id : 'val'} (-1 for fail)
 	*/
 	app.post("/addAlbum", function(req, res) {
-		var query = "INSERT INTO album (band_id, name,release_date) VALUES(?,?)";
-		executeQuery(query, [req.body.band_id, req.body.name,req.body.release_date], function(err, result) {
+		var query = "INSERT INTO album SET name = ?, band_id = ?, release_date = ?";
+		executeQuery(query, [req.body.band_id, req.body.name, req.body.release_date], function(err, result) {
+            var affected = req.affectedRows;
+            if(affected){
+                console.log("success");
+            }else{
+                console.log("fail");
+            }
 			if (err) {
 				console.log(err);
 			} else {
