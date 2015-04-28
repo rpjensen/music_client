@@ -219,9 +219,10 @@
     //album controller
     app.controller('AlbumController', ['$scope', function($scope) {
         // Holds the temporary add album input values
-        $scope.bandId = -1;// this should come from whatever band we are trying to add the album to
-        $scope.album = '';
-       // $scope.release_date = ''; // not messing with release_date yet
+        $scope.band_id = -1;// this should come from whatever band we are trying to add the album to
+        $scope.id = -1;
+        $scope.name = '';
+        $scope.release_date = ''; // not messing with release_date yet
 
         $scope.viewHideAlbums = true;
         $scope.toggleText = "Hide Albums";
@@ -238,27 +239,31 @@
             */
             $scope.albums = result;
         });
-        
         $scope.addAlbum = function() {
             // Kate: needs band id and the api field for album name is just 'name' (right now I haven't done anything with release date since its harder to display nicely)
             // We can get bandId by making the person add albums in the context of a band (like an add button off a band row)
             // Might even be something like $scope.band.id if we have a reference to a band object instead of just its id
             var newAlbum = {
-                "id" : $scope.bandId,
-                "name" : $scope.album,
+                "id" : $scope.id,
+                "band_id" : $scope.band_id,
+                "name" : $scope.name,
+                "release_date" : $scope.release_date
             };
+            console.log(newAlbum);
             // "release_date" : $scope.release_date
-            $.post('addAlbum', newAlbum, function(result) {
-                if (result != -1) {
-                    newAlbum.id = result;
-                    $scope.albums.push(newAlbum); //does this add to the db?
+            $.post('/addAlbum', newAlbum, function(result) {
+                if (result.id != -1) {
+                    newAlbum.id = result.id;
+                    $scope.albums.push($scope.albums.indexOf(newAlbum, 1)); //does this add to the db?
                     // This adds it to the local list (basically the client copy)
                     //clear input form now that we know they were added successfully
                     //this is a repeat from above. why is that a thing?
                     // if you got values from these variables this should clear the form
-                    $scope.bandId = '';
-                    $scope.album = '';
-                    //$scope.release_date = '';
+                    $scope.id = '';
+                    $scope.band_id = '';
+                    $scope.name = '';
+                    $scope.release_date = '';
+                    //$scope.apply();
                 }
                 else {
                     // some sort of 'error saving album' message or whatever
@@ -273,18 +278,18 @@
                 if (result === "success") {
                     // it was removed on the server, now make the client reflect that
                     $scope.album.splice($scope.albums.indexOf(albums), 1);
+                    $scope.apply();
                 }
                 else {
                     // some sort of 'error removing album' message or whatever
                 }
             });
         };
-
-        $scope.toggleAlbums = function() {
-            $scope.viewHideAlbums = ! $scope.viewHideAlbums;
-            $scope.toggleText = $scope.viewHideAlbums ? "Hide Albums" : "View Albums";
+        
+         $scope.toggleAlbum = function() {
+            $scope.viewHideAlbum = ! $scope.viewHideAlbum;
+            $scope.toggleText = $scope.viewHideAlbum ? "Hide Album" : "View Album";
         };
-
     }]);
     
     app.controller('SongController', ['$scope', function($scope){
