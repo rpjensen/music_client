@@ -249,11 +249,7 @@
             });
         };
         
-        
         $scope.addAlbum = function() {
-            // Kate: needs band id and the api field for album name is just 'name' (right now I haven't done anything with release date since its harder to display nicely)
-            // We can get bandId by making the person add albums in the context of a band (like an add button off a band row)
-            // Might even be something like $scope.band.id if we have a reference to a band object instead of just its id
             var newAlbum = {
                 "band_id" : $scope.bandId,
                 "name" : $scope.name,
@@ -350,8 +346,6 @@
                     $scope.songs.push($scope.convertFromServer(newSong)); //does this add to the db?
                     // This adds it to the local list (basically the client copy)
                     //clear input form now that we know they were added successfully
-                    //this is a repeat from above. why is that a thing?
-                    // if you got values from these variables this should clear the form
                     $scope.name = '';
                     $scope.albumId = '';
                     $scope.$apply();

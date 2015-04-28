@@ -4,7 +4,7 @@
 }
 
 html {
-    font-family: 'Gudea', sans-serif;
+    font-family: 'Alice', serif;
     font-size: 14px;
     background-color: #62ddd8;
     width: 800px;
@@ -235,33 +235,22 @@ input[type="text"] {
     font-size: 11px;
 }
 
-h1, h2 {
-    font-family: 'Berkshire Swash', cursive; /*this is the one*/
+h1 {
+    font-family: 'Sacramento', cursive;
     font-size: 40px;
     color: #676767;
 }
 h2 {
-    font-family: 'Berkshire Swash', cursive; /*this is the one*/
-    font-size: 70px;
+    font-family: 'Alice', serif;
+    font-size: 45px;
     color: #676767;
 }
 
 p {
-    font-family: 'Gudea', sans-serif;
+    font-family: 'Alice', serif;
     font-size: 14px;
     color: #676767;
 }
-
-/*
-.form-toggle-button {
-    display: inline-block;
-    text-align: center;
-    height: 20px;
-    padding: 5px 15px;
-    background-color: #62ddd8;
-    cursor: pointer;
-}
-*/
 
 .form-button-area {
     margin: 25px auto;
