@@ -376,11 +376,11 @@ var executeQuery = function(query, parameters, callback) {
 	*/
 	app.post("/addAlbum", function(req, res) {
 		var query = "INSERT INTO album SET name = ?, band_id = ?, release_date = ?";
-		executeQuery(query, [req.body.band_id, req.body.name, req.body.release_date], function(err, result) {
-            var affected = req.affectedRows;
-            if(affected){
+		executeQuery(query, [req.body.name, req.body.band_id, req.body.release_date], function(err, result) {
+            if(result.affectedRows){
                 console.log("success");
             }else{
+                console.log(result.affectedRows);
                 console.log("fail");
             }
 			if (err) {
