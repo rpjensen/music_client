@@ -338,10 +338,10 @@ var executeQuery = function(query, parameters, callback) {
 	/*
 	* Get an array of all albums
 	* Takes: nothing
-	* Returns: [{id : 'val', band_id : ‘val’, name : ‘val’}, {...}, ...}]
+	* Returns: [{id : 'val', band_id : ‘val’, name : ‘val’, release_date : 'val'}, {...}, ...}]
 	*/
 	app.get("/getAlbums", function(req, res) {
-		var query = "SELECT id, band_id, name FROM album";
+		var query = "SELECT id, band_id, name, release_date FROM album";
 		executeQuery(query, [], function(err, result) {
 			if (err) {
 				console.log(err);
