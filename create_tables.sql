@@ -34,7 +34,6 @@ CREATE TABLE `album` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
-
 # Dump of table artist
 # ------------------------------------------------------------
 

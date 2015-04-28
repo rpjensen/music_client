@@ -473,7 +473,6 @@ var executeQuery = function(query, parameters, callback) {
     app.post('/api/photo',function(req,res){
       if(done==true){
         console.log(req.files);
-        res.end(message);
       }
     });
 
