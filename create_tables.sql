@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.6.23)
 # Database: music
-# Generation Time: 2015-04-28 22:08:34 +0000
+# Generation Time: 2015-04-28 22:26:35 +0000
 # ************************************************************
 
 
@@ -29,7 +29,7 @@ CREATE TABLE `album` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `band_id` int(10) unsigned DEFAULT NULL,
   `name` varchar(60) DEFAULT '',
-  `release_date` varchar(20) DEFAULT '',
+  `release_date` varchar(50) DEFAULT '',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
