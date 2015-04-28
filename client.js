@@ -239,6 +239,7 @@
                 * Takes: nothing
                 * Returns: [{id : 'val', band_id : ‘val’, name : ‘val’}, {...}, ...}]
                 */
+                $scope.albums = [];
                 for(var i = 0; i < result.length; i++){
                     console.log(result[i]);
                     $scope.albums.push($scope.convertFromServer(result[i]));
@@ -263,14 +264,14 @@
             $.post('/addAlbum', newAlbum, function(result) {
                 if (result.id != -1) {
                     newAlbum.id = result.id;
-                    $scope.albums.push($scope.convertFromServer(newAlbum)); //does this add to the db?
+                    $scope.getAlbum();//albums.push($scope.convertFromServer(newAlbum)); //does this add to the db?
                     // This adds it to the local list (basically the client copy)
                     //clear input form now that we know they were added successfully
                     //this is a repeat from above. why is that a thing?
                     // if you got values from these variables this should clear the form
-                    $scope.band_id = '';
+                    $scope.bandId = '';
                     $scope.name = '';
-                    $scope.release_date = '';
+                    $scope.releaseDate = '';
                     $scope.$apply();
                 }
                 else {
@@ -282,10 +283,10 @@
         
         $scope.remove = function(album) {
             // api takes the album id that we have been holding onto for each album and removes using that id
-            $.post('removeAlbum', {"id" : album.id}, function(result) {
+            $.post('/removeAlbum', {"id" : album.id}, function(result) {
                 if (result === "success") {
                     // it was removed on the server, now make the client reflect that
-                    $scope.album.splice($scope.albums.indexOf(albums), 1);
+                    $scope.albums.splice($scope.albums.indexOf(album), 1);
                     $scope.$apply();
                 }
                 else {
@@ -295,11 +296,15 @@
         };
         
         $scope.convertFromServer = function(newAlbum) {
+            var releaseString = '';
+            if(newAlbum.release_date){
+                releaseString = newAlbum.release_date.substring(0, 16);
+            }
             var album = {
                 id : newAlbum.id,
                 bandId : newAlbum.band_id,
                 name : newAlbum.name,
-                releaseDate : newAlbum.release_date
+                releaseDate : releaseString
             };
             return album;
         };
