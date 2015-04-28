@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.6.23)
 # Database: music
-# Generation Time: 2015-04-11 02:20:16 +0000
+# Generation Time: 2015-04-28 22:08:34 +0000
 # ************************************************************
 
 
@@ -29,10 +29,19 @@ CREATE TABLE `album` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `band_id` int(10) unsigned DEFAULT NULL,
   `name` varchar(60) DEFAULT '',
-  `release_date` datetime DEFAULT NULL,
+  `release_date` varchar(20) DEFAULT '',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+LOCK TABLES `album` WRITE;
+/*!40000 ALTER TABLE `album` DISABLE KEYS */;
+
+INSERT INTO `album` (`id`, `band_id`, `name`, `release_date`)
+VALUES
+	(1,1,'blah',NULL);
+
+/*!40000 ALTER TABLE `album` ENABLE KEYS */;
+UNLOCK TABLES;
 
 # Dump of table artist
 # ------------------------------------------------------------
@@ -46,7 +55,7 @@ CREATE TABLE `artist` (
   `instrument` varchar(60) DEFAULT '',
   `genre` varchar(60) DEFAULT '',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 LOCK TABLES `artist` WRITE;
 /*!40000 ALTER TABLE `artist` DISABLE KEYS */;
@@ -59,9 +68,7 @@ VALUES
 	(4,'Brian','Keyhoe','Guitar',''),
 	(5,'Thom','Yorke','Vocals',''),
 	(6,'Colin','Greenwood','Bass',''),
-	(7,'Johnny','Greenwood','Guitar',''),
-	(8,'Ed','O\'Brien','Guitar',''),
-	(9,'Phillip','Selway','Drums','');
+	(7,'Johnny','Greenwood','Guitar','');
 
 /*!40000 ALTER TABLE `artist` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -77,7 +84,7 @@ CREATE TABLE `artist_for_band` (
   `band_id` int(10) unsigned NOT NULL,
   `artist_id` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 LOCK TABLES `artist_for_band` WRITE;
 /*!40000 ALTER TABLE `artist_for_band` DISABLE KEYS */;
@@ -91,9 +98,7 @@ VALUES
 	(5,3,4),
 	(6,4,5),
 	(7,4,6),
-	(8,4,7),
-	(9,4,8),
-	(10,4,9);
+	(8,4,7);
 
 /*!40000 ALTER TABLE `artist_for_band` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -109,7 +114,7 @@ CREATE TABLE `band` (
   `name` varchar(60) DEFAULT NULL,
   `genre` varchar(60) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 LOCK TABLES `band` WRITE;
 /*!40000 ALTER TABLE `band` DISABLE KEYS */;
@@ -119,7 +124,11 @@ VALUES
 	(1,'Primus','Metal'),
 	(3,'Duo De Twang','Twang'),
 	(4,'Radiohead','Alternative Rock'),
-	(5,'Macklemore','Rap');
+	(5,'Macklemore','Rap'),
+	(7,'Atmosphere','Rap'),
+	(11,'blah','duh'),
+	(10,'updated','genreblah'),
+	(14,'blah','blah');
 
 /*!40000 ALTER TABLE `band` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -168,6 +177,15 @@ CREATE TABLE `song` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+LOCK TABLES `song` WRITE;
+/*!40000 ALTER TABLE `song` DISABLE KEYS */;
+
+INSERT INTO `song` (`id`, `album_id`, `name`)
+VALUES
+	(2,1,'song name');
+
+/*!40000 ALTER TABLE `song` ENABLE KEYS */;
+UNLOCK TABLES;
 
 
 
