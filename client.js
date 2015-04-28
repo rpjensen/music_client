@@ -223,12 +223,12 @@
         $scope.name = '';
         $scope.releaseDate = ''; // not messing with release_date yet
 
-        $scope.viewHideAlbums = true;
+        $scope.viewHideAlbum = true;
         $scope.toggleText = "Hide Albums";
 
         $scope.albums = [];
         
-        $.getAlbum = function(){
+        $scope.getAlbum = function(){
             console.log("Get albums called");
             $.getJSON('/getAlbums', function(result){
                 console.log("getAlbum()");
@@ -243,7 +243,7 @@
                     console.log(result[i]);
                     $scope.albums.push($scope.convertFromServer(result[i]));
                 }
-                $scope.apply();
+                $scope.$apply();
                 //$scope.albums = result;
             });
         };
@@ -271,6 +271,7 @@
                     $scope.band_id = '';
                     $scope.name = '';
                     $scope.release_date = '';
+                    $scope.$apply();
                 }
                 else {
                     // some sort of 'error saving album' message or whatever
@@ -285,7 +286,7 @@
                 if (result === "success") {
                     // it was removed on the server, now make the client reflect that
                     $scope.album.splice($scope.albums.indexOf(albums), 1);
-                    //$scope.apply();
+                    $scope.$apply();
                 }
                 else {
                     // some sort of 'error removing album' message or whatever
@@ -305,8 +306,9 @@
         
          $scope.toggleAlbum = function() {
             $scope.viewHideAlbum = ! $scope.viewHideAlbum;
-            $scope.toggleText = $scope.viewHideAlbum ? "Hide Album" : "View Album";
+            $scope.toggleText = $scope.viewHideAlbum ? "Hide Albums" : "View Albums";
         };
+        $scope.getAlbum();
     }]);
     
     app.controller('SongController', ['$scope', function($scope){
