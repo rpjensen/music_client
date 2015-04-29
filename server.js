@@ -83,7 +83,7 @@ var executeQuery = function(query, parameters, callback) {
 	* Returns: [ {id : “val”, name : “val”, genre : ‘val’}, {...}, ... ]
 	*/
 	app.get("/getBands", function(req, res) {
-		var query = "SELECT id, name, genre FROM band";
+		var query = "SELECT id, name, genre FROM band ORDER BY id ASC";
 		executeQuery(query, function(err, result) {
 			if (err) {
 				console.log(err);
@@ -185,7 +185,7 @@ var executeQuery = function(query, parameters, callback) {
 	* Returns: array [ {id : ‘val’, first_name : ‘val’, last_name : ‘val’, instrument : ‘val’, genre : ‘val’}, {...}, … ]
 	*/
 	app.get("/getArtists", function(req, res) {
-		var query = "SELECT id, first_name, last_name, instrument, genre FROM artist";
+		var query = "SELECT a.id, a.first_name, a.last_name, a.instrument, a.band_id, b.name as band_name FROM artist a INNER JOIN band b ON a.band_id = b.id ORDER BY id ASC";
 		executeQuery(query, [], function(err, result) {
 			if (err) {
 				console.log(err);
@@ -219,9 +219,9 @@ var executeQuery = function(query, parameters, callback) {
 	* Returns : {"id" : id} (-1 for fail)
 	*/
 	app.post("/addArtist", function(req, res) {
-		var query = "INSERT INTO artist SET first_name = ?, last_name = ?, instrument = ?, genre = ?";
+		var query = "INSERT INTO artist SET first_name = ?, last_name = ?, instrument = ?, band_id = ?";
 		var body = req.body;
-		executeQuery(query, [body['first_name'], body['last_name'], body['instrument'], body['genre']], function(err, result) {
+		executeQuery(query, [body['first_name'], body['last_name'], body['instrument'], body['band_id']], function(err, result) {
 			if (err) {
 				console.log(err);
 			} else {
@@ -341,12 +341,13 @@ var executeQuery = function(query, parameters, callback) {
 	* Returns: [{id : 'val', band_id : ‘val’, name : ‘val’, release_date : 'val'}, {...}, ...}]
 	*/
 	app.get("/getAlbums", function(req, res) {
-		var query = "SELECT id, band_id, name, release_date FROM album";
+		var query = "SELECT a.id, a.band_id, b.name as band_name, a.name, a.release_date FROM album a INNER JOIN band b ON a.band_id = b.id ORDER BY id ASC";
 		executeQuery(query, [], function(err, result) {
 			if (err) {
 				console.log(err);
 			} else {
 				console.log(result);
+
 				res.json(result);
 			}
 		});
@@ -480,7 +481,7 @@ var executeQuery = function(query, parameters, callback) {
 	* Returns: [{id : ‘val’, name : ‘val’, album_id : 'val'}, {...}, … ]
 	*/
 	app.get("/getSongs", function(req, res) {
-		var query = "SELECT * FROM song";
+		var query = "SELECT s.id, s.name, s.album_id, a.name as album_name FROM song s INNER JOIN album a ON s.album_id = a.id ORDER BY id ASC";
 		executeQuery(query, [], function(err, result) {//////////////////////////////////////////
 			if (err) {
 				console.log(err);

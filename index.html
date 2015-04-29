@@ -49,7 +49,10 @@
                 <input type="text" ng-model="firstName" placeholder="First Name">
                 <input type="text" ng-model="lastName" placeholder="Last Name">
                 <input type="text" ng-model="instrument" placeholder="Instrument">
-                <input type="text" ng-model="genre" placeholder="Genre">
+                <select ng-model="bandId">
+                    <option value="-1">Select Band</option>
+                    <option ng-repeat="b in bands" value="{{b.id}}">{{b.name}}</option>
+                </select>
                 <button class="button-add" ng-click="addArtist()" ng-disabled="!(firstName.length && lastName.length)">+</button>
                 <br><br>
                 
@@ -66,7 +69,7 @@
                             <td>{{m.firstName}}</td>
                             <td>{{m.lastName}}</td>
                             <td>{{m.instrument}}</td>
-                            <td>{{m.genre}}</td>
+                            <td>{{m.bandName}}</td>
                            <td class="right"><button class="button-remove" ng-click="remove(m)">-</button></td>
                         </tr>
                     </table>
@@ -76,8 +79,13 @@
             <div ng-controller="AlbumController" class="album toggle-controller">
                 <h2>Album</h2>
                 <input type="text" ng-model="name" placeholder="Album">
-                <input type="date" ng-model="releaseDate">
-                <input type="text" ng-model="bandId" placeholder="band ID">
+                <select ng-model="bandId">
+                    <option value="-1">Select Band</option>
+                    <option ng-repeat="b in bands" value="{{b.id}}">{{b.name}}</option>
+                </select>
+                <input type="text" ng-model="releaseDate">
+                
+                <!--<input type="text" ng-model="bandId" placeholder="band ID">-->
                 
                 <button class="button-add" ng-click="addAlbum()" ng-disabled="!(name.length)">+</button>
                 <br><br>
@@ -90,8 +98,8 @@
                         </tr>
                         <tr ng-repeat="i in albums">
                             <td>{{i.name}}</td>
+                            <td>{{i.bandName}}</td>
                             <td>{{i.releaseDate}}</td>
-                            <td>{{i.bandId}}</td>
                            <td class="right"><button class="button-remove" ng-click="remove(i)">-</button></td>
                         </tr>
                     </table>
@@ -113,7 +121,10 @@
             <div ng-controller="SongController" class="song toggle-controller">
                 <h2>Song</h2>
                 <input type="text" ng-model="name" placeholder="Name of song">
-                <input type="text" ng-model="albumId" placeholder="Album">
+                <select ng-model="albumId">
+                    <option value="-1">Select Album</option>
+                    <option ng-repeat="a in albums" value="{{a.id}}">{{a.name}}</option>
+                </select>
                 <button class="button-add" ng-click="addSong()" ng-disabled="!albumId.length">+</button>
                 
                 <br><br>
@@ -124,7 +135,7 @@
                         <tr><th>Song Title</th></tr>
                         <tr ng-repeat="s in songs">                            
                             <td>{{s.name}}</td>
-                            <td>{{s.albumId}}</td>
+                            <td>{{s.albumName}}</td>
                            <td class="right"><button class="button-remove" ng-click="remove(s)">-</button></td>
                         </tr>
                     </table>
