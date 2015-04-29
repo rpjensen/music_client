@@ -11,11 +11,7 @@
             $('.toggle-controller').hide();
             $('.' + this.id).show();
         });
-/*
-        if ( $('[type="date"]').prop('type') != 'date' ) {
-            $('[type="date"]').datepicker();
-        }
-*/
+
     };
 
     $(document).ready(main);

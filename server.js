@@ -136,7 +136,7 @@ var executeQuery = function(query, parameters, callback) {
     
     /*
 	* Remove a given band based on existing ids
-	* Takes: {band_id : ‘val’}
+	* Takes: {id : ‘val’}
 	* Returns: ‘success’ or ‘failed’
 	*/
     	app.post("/removeBand", function(req, res) {
@@ -144,45 +144,25 @@ var executeQuery = function(query, parameters, callback) {
 		var body = req.body;
 		executeQuery(query, [body.id], function(err, result) {
 			var affected = result.affectedRows;
-            if (result.affectedRows) {
-					res.json('success');
-				}
 			if (err) {
 				console.log(err);
-			} else {
-				console.log(result);
+			}
+            else if (result.affectedRows) {
+					res.json('success');
+			}
+			else {
+				res.json('failed');
 			}
 		});
 	});
 
-	/*
-	* Remove an existing band by id. 
-	* Takes: {id : ‘val’} 
-	* Returns: ‘success’ or ‘failed’
-	*/
-	app.post("/removeBand", function(req, res) {
-		var query = "DELETE FROM band WHERE id = ?";
-		executeQuery(query, [req.body.id], function(err, result) {
-			if (err) {
-				console.log(err);
-			} else {
-				console.log(result);
-				if (result.affectedRows) {
-					res.json('success');
-				}
-				else {
-					res.json('failed');
-				}
-			}
-		});
-	});
 
 // ---------- Artists ----------
 
 	/*
 	* Get an array of all artists
 	* Takes: nothing
-	* Returns: array [ {id : ‘val’, first_name : ‘val’, last_name : ‘val’, instrument : ‘val’, genre : ‘val’}, {...}, … ]
+	* Returns: array [ {id : ‘val’, first_name : ‘val’, last_name : ‘val’, instrument : ‘val’, band_id : ‘val’, band_name : 'val'}, {...}, … ]
 	*/
 	app.get("/getArtists", function(req, res) {
 		var query = "SELECT a.id, a.first_name, a.last_name, a.instrument, a.band_id, b.name as band_name FROM artist a INNER JOIN band b ON a.band_id = b.id ORDER BY id ASC";
@@ -215,7 +195,7 @@ var executeQuery = function(query, parameters, callback) {
 
 	/*
 	* Insert a new artist into the database and get its
-	* Takes: {first_name : ‘val’, last_name : ‘val’, instrument : ‘val’, genre : ‘val’}
+	* Takes: {first_name : ‘val’, last_name : ‘val’, instrument : ‘val’, band_id : ‘val’}
 	* Returns : {"id" : id} (-1 for fail)
 	*/
 	app.post("/addArtist", function(req, res) {
@@ -310,26 +290,13 @@ var executeQuery = function(query, parameters, callback) {
 		var body = req.body;
 		executeQuery(query, [body.id], function(err, result) {
 			var affected = result.affectedRows;
-			if (err) {
-				console.log(err);
-			} else {
-				console.log(result);
+			console.log(result);
+			if (affected) {
+				res.json('success');
 			}
-			query = "DELETE FROM artist_for_band WHERE artist_id = ?";
-			executeQuery(query, [body.id], function(err, result) {
-				if (err) {
-					console.log(err);
-				} else {
-					console.log(result);
-					if (affected) {
-						res.json('success');
-					}
-					else {
-						res.json('failed');
-					}
-				}
-			});
-			
+			else {
+				res.json('failed');
+			}
 		});
 	});
 
@@ -338,7 +305,7 @@ var executeQuery = function(query, parameters, callback) {
 	/*
 	* Get an array of all albums
 	* Takes: nothing
-	* Returns: [{id : 'val', band_id : ‘val’, name : ‘val’, release_date : 'val'}, {...}, ...}]
+	* Returns: [{id : 'val', band_id : ‘val’, name : ‘val’, release_date : 'val', band_name : 'val'}, {...}, ...}]
 	*/
 	app.get("/getAlbums", function(req, res) {
 		var query = "SELECT a.id, a.band_id, b.name as band_name, a.name, a.release_date FROM album a INNER JOIN band b ON a.band_id = b.id ORDER BY id ASC";
@@ -372,7 +339,7 @@ var executeQuery = function(query, parameters, callback) {
 
 	/*
 	* Insert a new album based on a given band
-	* Takes: {band_id : ‘val’, name : ‘val’}
+	* Takes: {band_id : ‘val’, name : ‘val’, release_date : 'val'}
 	* Returns {id : 'val'} (-1 for fail)
 	*/
 	app.post("/addAlbum", function(req, res) {
@@ -478,7 +445,7 @@ var executeQuery = function(query, parameters, callback) {
 	/*
 	* Get an array of all songs
 	* Takes: nothing
-	* Returns: [{id : ‘val’, name : ‘val’, album_id : 'val'}, {...}, … ]
+	* Returns: [{id : ‘val’, name : ‘val’, album_id : 'val', album_name : 'val'}, {...}, … ]
 	*/
 	app.get("/getSongs", function(req, res) {
 		var query = "SELECT s.id, s.name, s.album_id, a.name as album_name FROM song s INNER JOIN album a ON s.album_id = a.id ORDER BY id ASC";
