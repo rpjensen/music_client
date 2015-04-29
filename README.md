@@ -1,14 +1,12 @@
 # music_client
 
 University of North Carolina Asheville
+
 CSCI 344 - Web Technology
+
 Spring 2015
 
-Contributors:
-Ryan Jensen
-Marianna Herzog
-Ivy Sugars
-Katelynn Alexander
+Contributors: Ryan Jensen, Marianna Herzog, Ivy Sugars, Katelynn Alexander
 
 Code located at: https://github.com/rpjensen/music_client/tree/dev
 
