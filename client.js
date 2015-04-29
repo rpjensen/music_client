@@ -50,9 +50,6 @@
 
     });
     
-    //https://docs.angularjs.org/guide/scope
-    //https://docs.angularjs.org/guide/controller
-
     // Band controller
     app.controller('BandController', ['$scope', 'updateService', function($scope, updateService) {
         
@@ -66,7 +63,6 @@
         $scope.toggleText = "Hide Bands";
         
         $scope.bands = [];// holds a list of existing bands that are backed up to the server
-        //how does this work? Makes a web call, triggers a function that queries the DB for all the songs and returns the formatted result
         $scope.getBands = function(){
             console.log("Get bands called");
             $.getJSON('/getBands', function(result) {
@@ -113,7 +109,7 @@
            });
         };
         
-        //deletes an artist from the db?
+        //deletes an artist from the db
         $scope.remove = function(band) {
             console.log(band);
             // remove band needs the id of the band you would like to remove
@@ -298,7 +294,6 @@
             console.log("Get albums called");
             $.getJSON('/getAlbums', function(result){
                 console.log("getAlbum()");
-                // Kate: The result is an array of ALL existing albums [{albumId : 'val', bandId : ‘val’, name : ‘val’}, {...}, ...}]
                 // Use /getAlbumForBand if you want the albums for a particular band
                /*
                 * Get an array of all albums
@@ -330,7 +325,7 @@
             $.post('/addAlbum', newAlbum, function(result) {
                 if (result.id != -1) {
                     newAlbum.id = result.id;
-                    $scope.getAlbum();//albums.push($scope.convertFromServer(newAlbum)); //does this add to the db?
+                    $scope.getAlbum(); //albums.push($scope.convertFromServer(newAlbum)); 
                     // This adds it to the local list (basically the client copy)
                     //clear input form now that we know they were added successfully
                     //this is a repeat from above. why is that a thing?

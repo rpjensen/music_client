@@ -234,7 +234,7 @@ table {
     cursor: pointer;
 }
 
-input[type="text"] {
+input[type="text"], input[type="date"] {
     height: 15px;
     padding: 5px;
     font-size: 11px;
