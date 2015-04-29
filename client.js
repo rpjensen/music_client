@@ -11,6 +11,11 @@
             $('.toggle-controller').hide();
             $('.' + this.id).show();
         });
+/*
+        if ( $('[type="date"]').prop('type') != 'date' ) {
+            $('[type="date"]').datepicker();
+        }
+*/
     };
 
     $(document).ready(main);
@@ -20,13 +25,40 @@
     //[] if specified then new module is being created. If unspecified then the module is being retrieved for further configuration. (optional)
     //returns new module with the angular.Module api
     var app = angular.module('music', []);
+    app.factory('updateService', function($rootScope) {
+        var sharedService = {};
+        sharedService.bands = [];
+        sharedService.artists = [];
+        sharedService.albums = [];
+
+        sharedService.bandsUpdate = function(newBands) {
+            this.bands = newBands;
+            $rootScope.$broadcast('bandsUpdate');
+        };
+
+        sharedService.artistsUpdate = function(newArtists) {
+            this.artists = newArtists;
+            $rootScope.$broadcast('artistsUpdate');
+        };
+
+        sharedService.albumsUpdate = function(newAlbums) {
+            this.albums = newAlbums;
+            $rootScope.$broadcast('albumsUpdate');
+        };
+
+        return sharedService;
+
+    });
     
     // Band controller
-    app.controller('BandController', ['$scope', function($scope) {
+    app.controller('BandController', ['$scope', 'updateService', function($scope, updateService) {
         
         // Holds the temporary add artist input values
         $scope.name = '';
         $scope.genre = '';
+
+        $scope.artists = [];
+
         $scope.viewHideBands = true;
         $scope.toggleText = "Hide Bands";
         
@@ -42,6 +74,7 @@
                     console.log(band);
                     $scope.bands.push(band);
                 }
+                updateService.bandsUpdate($scope.bands);
                 $scope.$apply();
                 //$scope.artists = result;
             });
@@ -66,6 +99,7 @@
                    // if you got values from these variables this should clear the form
                    $scope.name = '';
                    $scope.genre = '';
+                   updateService.bandsUpdate($scope.bands);
                    $scope.$apply();
                }
                else {
@@ -84,6 +118,7 @@
                 if (result === "success") {
                     // it was removed on the server, now make the client reflect that change
                     $scope.bands.splice($scope.bands.indexOf(band), 1);
+                    updateService.bandsUpdate($scope.bands);
                     $scope.$apply();
                 }
                 else {
@@ -108,20 +143,28 @@
             return band;
         };
 
+        $scope.$on('artistsUpdate', function() {
+            console.log("Band Heard Artist update");
+            //console.log(updateService);
+            $scope.artists = updateService.artists;
+        });
+
         $scope.getBands();    
         console.log($scope.bands);                             
     }]);
 
     //artist controller
-    app.controller('ArtistController', ['$scope', function($scope) {
+    app.controller('ArtistController', ['$scope', 'updateService', function($scope, updateService) {
         
         // Holds the temporary add artist input values
         $scope.firstName = '';
         $scope.lastName = '';
-        $scope.genre = '';
+        $scope.bandId = '-1';
         $scope.instrument = '';
         $scope.viewHideArtists = true;
         $scope.toggleText = "Hide Artists";
+
+        $scope.bands = [];
         
         $scope.artists = [];// holds a list of existing artists that are backed up to the server
         //how does this work? Makes a web call, triggers a function that queries the DB for all the songs and returns the formatted result
@@ -136,6 +179,7 @@
                     console.log(art);
                     $scope.artists.push(art);
                 }
+                updateService.artistsUpdate($scope.artists);
                 $scope.$apply();
                 //$scope.artists = result;
             });
@@ -146,7 +190,7 @@
 			var newArtist = {
 				"first_name" : $scope.firstName,
                 "last_name" : $scope.lastName,
-				"genre" : $scope.genre,
+				"band_id" : $scope.bandId,
 				"instrument" : $scope.instrument
 			};
             console.log("New artist");
@@ -164,6 +208,7 @@
                    $scope.lastName = '';
                    $scope.genre = '';
                    $scope.instrument = '';
+                   updateService.artistsUpdate($scope.artists);
                    $scope.$apply();
                }
                else {
@@ -182,6 +227,7 @@
                 if (result === "success") {
                     // it was removed on the server, now make the client reflect that change
                     $scope.artists.splice($scope.artists.indexOf(artist), 1);
+                    updateService.artistsUpdate($scope.artists);
                     $scope.$apply();
                 }
                 else {
@@ -198,26 +244,46 @@
         };
 
         $scope.convertFromServer = function(artist) {
+            console.log("Convert new artist");
+            console.log(artist);
+            if (!artist.band_name) {
+                for (var i = 0; i < $scope.bands.length; i++) {
+                    if ($scope.bands[i].id == artist.band_id) {
+                        console.log("local match");
+                        console.log($scope.bands[i]);
+                        artist.band_name = $scope.bands[i].name;
+                        break;
+                    }
+                }
+            }
             var art = {
                 id : artist.id,
                 firstName : artist.first_name,
                 lastName : artist.last_name,
                 instrument : artist.instrument,
-                genre : artist.genre
+                bandId : artist.band_id,
+                bandName : artist.band_name
             };
             return art;
         };
 
+        $scope.$on('bandsUpdate', function() {
+            console.log("Artist Heard band update");
+            //console.log(updateService);
+            $scope.bands = updateService.bands;
+        });
+
         $scope.getArtists();	
-        console.log($scope.artists);							 
 	}]);
     
     //album controller
-    app.controller('AlbumController', ['$scope', function($scope) {
+    app.controller('AlbumController', ['$scope', 'updateService', function($scope, updateService) {
         // Holds the temporary add album input values
         $scope.bandId = -1;// this should come from whatever band we are trying to add the album to
         $scope.name = '';
         $scope.releaseDate = ''; // not messing with release_date yet
+
+        $scope.bands = [];
 
         $scope.viewHideAlbum = true;
         $scope.toggleText = "Hide Albums";
@@ -239,12 +305,16 @@
                     console.log(result[i]);
                     $scope.albums.push($scope.convertFromServer(result[i]));
                 }
+                updateService.albumsUpdate($scope.albums);
                 $scope.$apply();
                 //$scope.albums = result;
             });
         };
         
         $scope.addAlbum = function() {
+            if ($scope.bandId === '-1') {
+                return;
+            }
             var newAlbum = {
                 "band_id" : $scope.bandId,
                 "name" : $scope.name,
@@ -260,9 +330,10 @@
                     //clear input form now that we know they were added successfully
                     //this is a repeat from above. why is that a thing?
                     // if you got values from these variables this should clear the form
-                    $scope.bandId = '';
+//                    $scope.bandId = "-1";
                     $scope.name = '';
                     $scope.releaseDate = '';
+                    updateService.albumsUpdate($scope.albums);
                     $scope.$apply();
                 }
                 else {
@@ -278,6 +349,7 @@
                 if (result === "success") {
                     // it was removed on the server, now make the client reflect that
                     $scope.albums.splice($scope.albums.indexOf(album), 1);
+                    updateService.albumsUpdate($scope.albums);
                     $scope.$apply();
                 }
                 else {
@@ -294,6 +366,7 @@
             var album = {
                 id : newAlbum.id,
                 bandId : newAlbum.band_id,
+                bandName : newAlbum.band_name,
                 name : newAlbum.name,
                 releaseDate : releaseString
             };
@@ -304,12 +377,19 @@
             $scope.viewHideAlbum = ! $scope.viewHideAlbum;
             $scope.toggleText = $scope.viewHideAlbum ? "Hide Albums" : "View Albums";
         };
+
+        $scope.$on('bandsUpdate', function() {
+            console.log("Album Heard band update");
+            //console.log(updateService);
+            $scope.bands = updateService.bands;
+        });
+
         $scope.getAlbum();
     }]);
     
-    app.controller('SongController', ['$scope', function($scope){
+    app.controller('SongController', ['$scope', 'updateService', function($scope, updateService){
         $scope.name = '';
-        $scope.albumId = '';
+        $scope.albumId = '-1';
         $scope.songs = [];
 		
 		$scope.viewHideSongs = true;
@@ -342,7 +422,6 @@
                     // This adds it to the local list (basically the client copy)
                     //clear input form now that we know they were added successfully
                     $scope.name = '';
-                    $scope.albumId = '';
                     $scope.$apply();
                 }
                 else {
@@ -372,11 +451,31 @@
         };
 
         $scope.convertFromServer = function(newSong) {
+            console.log("Convert new song");
+            console.log(newSong);
+            if (!newSong.album_name) {
+                for (var i = 0; i < $scope.albums.length; i++) {
+                    console.log($scope.albums[i].id);
+                    if ($scope.albums[i].id == newSong.album_id) {
+                        console.log("local match");
+                        console.log($scope.albums[i]);
+                        newSong.album_name = $scope.albums[i].name;
+                        break;
+                    }
+                }
+            }
             var song = {};
             song.id = newSong.id;
             song.albumId = newSong.album_id;
+            song.albumName = newSong.album_name;
             song.name = newSong.name;
             return song;
         };
+
+        $scope.$on('albumsUpdate', function() {
+            console.log("Song Heard album update");
+          //  console.log(updateService);
+            $scope.albums = updateService.albums;
+        });
     }]);
 }());
