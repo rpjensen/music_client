@@ -14,14 +14,12 @@ It uses a mysql database to relate artists to specific bands, songs to specific 
 
 
 To view the site follow these few simple steps:
-   1. Start a MYSQL daemon either a bare bones install or using a package such as,
-   
+  1. Start a MYSQL daemon either a bare bones install or using a package such as,
    - WAMP works for Windows
    - MAMP works for Mac (MySQL Port: 3306)
    - Sidenote: Depending on the machine you might (read as probably) need to comment out line #13 for socketPath in the server.js file if it isn't already commented out.
-   
-   2. Create a MYSQL database called music
-   3. Run the 'create_tables.sql' query on that database.  This will create the table structure and some sample data to work with.
-   4. Run Node on the server.js file. It should give you the output "Listening on port 3000."
-   5. Start a server:
-   6. Go to localhost:3000 in the browser of your choice
+  2. Create a MYSQL database called music
+  3. Run the 'create_tables.sql' query on that database.  This will create the table structure and some sample data to work with.
+  4. Run Node on the server.js file. It should give you the output "Listening on port 3000."
+  5. Start a server:
+  6. Go to localhost:3000 in the browser of your choice
