@@ -10,7 +10,7 @@
 		pool = mysql.createPool({
 			connectionLimit : 100,
 			host : 'localhost',
-           // socketPath : '/Applications/MAMP/tmp/mysql/mysql.sock', //comment this out before pushing 
+            socketPath : '/Applications/MAMP/tmp/mysql/mysql.sock', //comment this out before pushing 
 			user : 'root',
 			password : 'root',
 			database : 'music',
