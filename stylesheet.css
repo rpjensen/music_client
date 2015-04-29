@@ -32,6 +32,11 @@ body {
     height: 230px;
 }
 
+.footer {
+    height: 50px;
+
+}
+
 .band, .artist, .album, .song, .event {
     height: auto;
     padding: 5px;
