@@ -16,7 +16,7 @@ It uses a mysql database to relate artists to specific bands, songs to specific 
 To view the site follow these few simple steps:
    1. Run Node on the server.js file. It should give you the output "Listening on port 3000."
    2. Start a server:
-   WAMP works for Windows
-   MAMP works for Mac (MySQL Port: 3306)
-   * Sidenote: Depending on the machine you might (read as probably) need to comment out line #13 for socketPath in the server.js file if it isn't already commented out.
+   - WAMP works for Windows
+   - MAMP works for Mac (MySQL Port: 3306)
+   - Sidenote: Depending on the machine you might (read as probably) need to comment out line #13 for socketPath in the server.js file if it isn't already commented out.
    3. Go to localhost:3000 in the browser of your choice
